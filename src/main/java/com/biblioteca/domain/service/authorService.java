@@ -25,8 +25,9 @@ public class authorService {
         author.setUpdated_at(LocalDateTime.now());
         return repository.save(author);
     };
-//
-//    public List<authorModel> getAuthors(){
-//
-//    };
+
+
+    public List<authorModel> getAllAuthors(){
+        return this.repository.findAll();
+    };
 }
