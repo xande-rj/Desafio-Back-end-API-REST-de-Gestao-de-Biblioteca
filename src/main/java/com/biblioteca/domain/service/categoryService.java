@@ -28,7 +28,7 @@ public class categoryService {
     };
 
 
-//    public List<categoryModel> getAllCategorys(){
-//        return this.repository.findAll();
-//    };
+    public List<categoryModel> getAllCategorys(){
+        return this.repository.findAll();
+    };
 }

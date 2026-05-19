@@ -8,10 +8,9 @@ import com.biblioteca.mapper.mapperCategory;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
@@ -27,5 +26,11 @@ public class categoryController {
     public ResponseEntity<categoryResponseDTO> createdCategory(@Valid @RequestBody categoryRequestDTO data){
         categoryResponseDTO category = this.mapper.categoryToResponse(this.service.createdCategory(data));
         return new ResponseEntity<categoryResponseDTO>(category, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<categoryResponseDTO>> getAllCategory(){
+        List<categoryResponseDTO> categorys = this.mapper.categorysToResponse(this.service.getAllCategorys());
+        return new ResponseEntity<List<categoryResponseDTO>>(categorys, HttpStatus.OK);
     }
 }
