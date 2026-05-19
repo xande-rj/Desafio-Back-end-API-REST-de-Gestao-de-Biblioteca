@@ -6,8 +6,7 @@ import com.biblioteca.domain.service.authorService;
 import com.biblioteca.dto.request.authorRequestDTO;
 import com.biblioteca.dto.response.authorResponseDTO;
 import com.biblioteca.mapper.mapperAuthor;
-import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpHeaders;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +25,7 @@ public class authorController {
     }
 
     @PostMapping("/authors")
-    public ResponseEntity< authorResponseDTO> saveAuthor(@RequestBody authorRequestDTO data) {
+    public ResponseEntity<authorResponseDTO> saveAuthor(@RequestBody @Valid  authorRequestDTO data) {
         authorResponseDTO author = mapper.authorToDTO(this.service.createdAuthor(data));
 
         return new ResponseEntity<authorResponseDTO>(author, HttpStatus.CREATED);
