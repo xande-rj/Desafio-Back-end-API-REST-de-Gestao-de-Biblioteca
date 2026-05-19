@@ -20,5 +20,5 @@ public class authorModel {
     private String name;
     private String details;
     private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+
 }

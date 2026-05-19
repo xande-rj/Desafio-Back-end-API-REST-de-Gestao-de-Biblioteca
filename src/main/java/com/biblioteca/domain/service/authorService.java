@@ -22,7 +22,6 @@ public class authorService {
         author.setName(data.getName());
         author.setDetails(data.getDetails());
         author.setCreated_at(LocalDateTime.now());
-        author.setUpdated_at(LocalDateTime.now());
         return repository.save(author);
     };
 
