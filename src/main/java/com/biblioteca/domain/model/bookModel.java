@@ -1,5 +1,6 @@
 package com.biblioteca.domain.model;
 
+import com.biblioteca.domain.enuns.Status;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "TB_author")
+@Table(name = "TB_book")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,18 +18,20 @@ public class bookModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String titulo;
+    private String title;
     private String details;
     private Long pages;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
-//    private status;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "author_id", referencedColumnName = "id",nullable = false)
-//    private authorModel author;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "category_id", referencedColumnName = "id",nullable = false)
-//    private List<categoryModel> category;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id",nullable = false)
+    private authorModel author;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id",nullable = false)
+    private categoryModel category;
 }
