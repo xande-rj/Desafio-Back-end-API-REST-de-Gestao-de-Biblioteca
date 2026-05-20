@@ -42,7 +42,7 @@ public class bookService {
         book.setUpdated_at(LocalDateTime.now());
         book.setStatus(Status.AVAILABLE);
         book.setAuthor(authorRepository.findByNameIgnoreCase(data.getAuthor()).orElseThrow(() -> new ResourceNotFoundException("Author dont exists")));
-        book.setCategory(categoryRepository.findByNameIgnoreCase(data.getCategorys()).orElseThrow(() -> new ResourceNotFoundException("Category dont exist")));
+        book.setCategory(categoryRepository.findByNameIgnoreCase(data.getCategory()).orElseThrow(() -> new ResourceNotFoundException("Category dont exist")));
 
         return bookRepository.save(book);
 
