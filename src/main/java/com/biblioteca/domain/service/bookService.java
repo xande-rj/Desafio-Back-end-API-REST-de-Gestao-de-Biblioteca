@@ -1,9 +1,9 @@
 package com.biblioteca.domain.service;
 
 import com.biblioteca.domain.enuns.Status;
-import com.biblioteca.domain.model.authorModel;
+
 import com.biblioteca.domain.model.bookModel;
-import com.biblioteca.domain.model.categoryModel;
+
 import com.biblioteca.domain.repository.authorRepository;
 import com.biblioteca.domain.repository.bookRepository;
 import com.biblioteca.domain.repository.categoryRepository;
@@ -12,7 +12,7 @@ import com.biblioteca.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+
 
 
 @Service
@@ -42,7 +42,7 @@ public class bookService {
         book.setUpdated_at(LocalDateTime.now());
         book.setStatus(Status.AVAILABLE);
         book.setAuthor(authorRepository.findByNameIgnoreCase(data.getAuthor()).orElseThrow(() -> new ResourceNotFoundException("Author dont exists")));
-        book.setCategory(categoryRepository.findByNameIgnoreCase(data.getCategory()).orElseThrow(() -> new ResourceNotFoundException("Category dont exist")));
+        book.setCategory(categoryRepository.findByTitleIgnoreCase(data.getCategory()).orElseThrow(() -> new ResourceNotFoundException("Category dont exist")));
 
         return bookRepository.save(book);
 

@@ -9,8 +9,8 @@ import java.util.UUID;
 @Getter
 @Setter
 public class categoryRequestDTO {
-    @NotBlank(message = "The category must have a name")
-    private String name;
+    @NotBlank(message = "The category must have a title")
+    private String title;
     @NotBlank(message = "The category must have a details")
     private String details;
 }

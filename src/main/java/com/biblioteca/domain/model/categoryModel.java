@@ -17,7 +17,7 @@ public class categoryModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private String name;
+    private String title;
     private String details;
     private LocalDateTime created_at;
 }

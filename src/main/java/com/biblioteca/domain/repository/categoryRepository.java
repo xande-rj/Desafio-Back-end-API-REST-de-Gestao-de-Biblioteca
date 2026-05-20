@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Repository
 public interface categoryRepository extends JpaRepository<categoryModel, UUID> {
-     boolean existsByNameIgnoreCase(String name);
+     boolean existsByTitleIgnoreCase(String name);
 
-     Optional<categoryModel> findByNameIgnoreCase(String name);
+     Optional<categoryModel> findByTitleIgnoreCase(String name);
 }

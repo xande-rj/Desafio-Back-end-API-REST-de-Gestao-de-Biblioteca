@@ -6,6 +6,7 @@ import com.biblioteca.domain.model.categoryModel;
 import com.biblioteca.domain.repository.categoryRepository;
 import com.biblioteca.dto.request.authorRequestDTO;
 import com.biblioteca.dto.request.categoryRequestDTO;
+import com.biblioteca.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,7 +22,10 @@ public class categoryService {
 
     public categoryModel createdCategory(categoryRequestDTO data){
         categoryModel category = new categoryModel();
-        category.setName(data.getName());
+        if(repository.existsByTitleIgnoreCase(data.getTitle())){
+            throw  new ResourceNotFoundException("A category with that title already exists.");
+        }
+        category.setTitle(data.getTitle());
         category.setDetails(data.getDetails());
         category.setCreated_at(LocalDateTime.now());
         return repository.save(category);

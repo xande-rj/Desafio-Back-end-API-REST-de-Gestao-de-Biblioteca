@@ -9,9 +9,9 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@JsonPropertyOrder({"id","name","details"})
+@JsonPropertyOrder({"id","title","details"})
 public class categoryResponseDTO {
     private UUID id;
-    private String name;
+    private String title;
     private String details;
 }
