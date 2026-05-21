@@ -2,17 +2,24 @@ package com.biblioteca.domain.service;
 
 import com.biblioteca.domain.enuns.Status;
 
+import com.biblioteca.domain.model.authorModel;
 import com.biblioteca.domain.model.bookModel;
 
+import com.biblioteca.domain.model.categoryModel;
 import com.biblioteca.domain.repository.authorRepository;
 import com.biblioteca.domain.repository.bookRepository;
 import com.biblioteca.domain.repository.categoryRepository;
 import com.biblioteca.dto.request.bookRequestDTO;
 import com.biblioteca.exception.ResourceNotFoundException;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-
+import java.util.List;
 
 
 @Service
@@ -32,9 +39,9 @@ public class bookService {
 
     public bookModel createdBook(bookRequestDTO data) {
         bookModel book = new bookModel();
-        if(bookRepository.existsByTitle(data.getTitle())){
-            throw  new ResourceNotFoundException("A book with that title already exists.");
-        }
+//        if(bookRepository.existsByTitle(data.getTitle())){
+//            throw  new ResourceNotFoundException("A book with that title already exists.");
+//        }
         book.setTitle(data.getTitle());
         book.setPages(data.getPages());
         book.setDetails(data.getDetails());
@@ -48,8 +55,33 @@ public class bookService {
 
     }
 
-    public void getAllBook() {
+    public Page<bookModel> getAllBook(Pageable pageable, String search) {
+        if (search.isBlank()) {
+            return this.bookRepository.findAll(pageable);
+        }
+
+        Specification<bookModel> spec =
+                (root, query, criteriaBuilder) -> {
+                    query.distinct(true);
+                    Join<bookModel, authorModel> author = root.join("author", JoinType.LEFT);
+                    Join<bookModel, categoryModel> category = root.join("category", JoinType.LEFT);
+
+                    String like = "%" + search.toLowerCase() + "%";
+                    return criteriaBuilder.or(
+                            criteriaBuilder.like(
+                                    criteriaBuilder.lower(root.get("title")), like
+                            ),
+                            criteriaBuilder.like(
+                                    criteriaBuilder.lower(author.get("name")), like
+                            ),
+                            criteriaBuilder.like(
+                                    criteriaBuilder.lower(category.get("title")), like
+                            )
+                    );
+                };
+        return this.bookRepository.findAll(spec,pageable);
     }
+
 
     public void getBookById(Long id) {
     }
