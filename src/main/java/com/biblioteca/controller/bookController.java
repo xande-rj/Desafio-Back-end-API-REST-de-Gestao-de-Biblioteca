@@ -1,5 +1,6 @@
 package com.biblioteca.controller;
 
+import com.biblioteca.domain.model.bookModel;
 import com.biblioteca.domain.service.bookService;
 import com.biblioteca.dto.request.bookRequestDTO;
 import com.biblioteca.dto.response.bookResponseDTO;
@@ -29,13 +30,16 @@ public class bookController {
         return new ResponseEntity<bookResponseDTO>(newBook,HttpStatus.CREATED);
     }
     @GetMapping
-    public Page<?> getBooks(
+    public Page<bookResponseDTO> getBooks(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "1") int size,
             @RequestParam(defaultValue = "") String search
     ){
         Pageable pageable = PageRequest.of(page,size);
-       return this.service.getAllBook(pageable,search);
+
+            Page<bookModel> book = this.service.getAllBook(pageable,search);
+
+       return this.mapper.booksToResponse(book);
     }
 
 }

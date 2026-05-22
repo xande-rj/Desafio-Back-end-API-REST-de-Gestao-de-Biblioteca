@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class bookModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String details;

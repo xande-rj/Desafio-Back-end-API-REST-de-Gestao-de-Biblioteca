@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonPropertyOrder({"id","title","details","pages","created_at","author","categorys"})
+@JsonPropertyOrder({"id","title","details","pages","created_at","author","category"})
 public class bookResponseDTO {
     private Long id;
     private String title;
