@@ -6,6 +6,7 @@ pages BIGINT,
 created_at TIMESTAMP,
 updated_at TIMESTAMP,
 status VARCHAR(50),
+removed BOOLEAN,
 
 author_id UUID NOT NULL,
 CONSTRAINT fk_book_author FOREIGN KEY(author_id)REFERENCES tb_author(id),

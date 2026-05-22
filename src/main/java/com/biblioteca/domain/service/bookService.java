@@ -19,7 +19,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -40,15 +39,16 @@ public class bookService {
 
     public bookModel createdBook(bookRequestDTO data) {
         bookModel book = new bookModel();
-//        if(bookRepository.existsByTitle(data.getTitle())){
-//            throw  new ResourceNotFoundException("A book with that title already exists.");
-//        }
+        if(bookRepository.existsByTitle(data.getTitle())){
+            throw  new ResourceNotFoundException("A book with that title already exists.");
+        }
         book.setTitle(data.getTitle());
         book.setPages(data.getPages());
         book.setDetails(data.getDetails());
         book.setCreated_at(LocalDateTime.now());
         book.setUpdated_at(LocalDateTime.now());
         book.setStatus(Status.AVAILABLE);
+        book.setRemoved(false);
         book.setAuthor(authorRepository.findByNameIgnoreCase(data.getAuthor()).orElseThrow(() -> new ResourceNotFoundException("Author dont exists")));
         book.setCategory(categoryRepository.findByTitleIgnoreCase(data.getCategory()).orElseThrow(() -> new ResourceNotFoundException("Category dont exist")));
 
@@ -87,7 +87,7 @@ public class bookService {
     public bookModel getBookById(Long id) {
         Optional<bookModel> book= bookRepository.findById(id);
         if(book.isEmpty()){
-            throw new ResourceNotFoundException("Nao ta aqui");
+            throw new ResourceNotFoundException("The book you're looking for is currently unavailable.");
         }
         return book.get();
     }
@@ -95,10 +95,11 @@ public class bookService {
     public bookModel deleteBook(Long id) {
         Optional<bookModel> book = this.bookRepository.findById(id);
         if(book.isEmpty()){
-            throw new ResourceNotFoundException("Nao ta aqui");
+            throw new ResourceNotFoundException("The book you're looking for is currently unavailable.");
         }
         bookModel newBook = book.get();
         newBook.setStatus(Status.UNAVAILABLE);
+        newBook.setRemoved(true);
         return this.bookRepository.save(newBook);
     }
 

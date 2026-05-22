@@ -26,6 +26,8 @@ public class bookModel {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+    private boolean removed;
+
 
     @ManyToOne
     @JoinColumn(name = "author_id",nullable = false)
