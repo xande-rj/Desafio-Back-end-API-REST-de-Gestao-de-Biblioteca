@@ -11,6 +11,4 @@ import java.util.UUID;
 public class categoryRequestDTO {
     @NotBlank(message = "The category must have a title")
     private String title;
-    @NotBlank(message = "The category must have a details")
-    private String details;
 }

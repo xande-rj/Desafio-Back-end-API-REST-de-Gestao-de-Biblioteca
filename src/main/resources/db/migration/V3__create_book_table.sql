@@ -1,0 +1,16 @@
+CREATE TABLE tb_books (
+id BIGINT PRIMARY KEY,
+title VARCHAR(255) NOT NULL,
+details VARCHAR(255) NOT NULL,
+pages BIGINT,
+created_at TIMESTAMP,
+updated_at TIMESTAMP,
+status VARCHAR(50),
+
+author_id UUID NOT NULL,
+CONSTRAINT fk_book_author FOREIGN KEY(author_id)REFERENCES tb_author(id),
+
+category_id UUID NOT NULL,
+CONSTRAINT fk_book_category FOREIGN KEY(category_id)REFERENCES tb_category(id)
+
+);

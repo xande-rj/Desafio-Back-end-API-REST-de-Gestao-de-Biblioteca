@@ -26,7 +26,6 @@ public class categoryService {
             throw  new ResourceNotFoundException("A category with that title already exists.");
         }
         category.setTitle(data.getTitle());
-        category.setDetails(data.getDetails());
         category.setCreated_at(LocalDateTime.now());
         return repository.save(category);
     };
