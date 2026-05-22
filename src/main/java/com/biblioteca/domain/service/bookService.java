@@ -92,9 +92,18 @@ public class bookService {
         return book.get();
     }
 
+    public bookModel deleteBook(Long id) {
+        Optional<bookModel> book = this.bookRepository.findById(id);
+        if(book.isEmpty()){
+            throw new ResourceNotFoundException("Nao ta aqui");
+        }
+        bookModel newBook = book.get();
+        newBook.setStatus(Status.UNAVAILABLE);
+        return this.bookRepository.save(newBook);
+    }
+
     public void updateBook(bookRequestDTO data) {
     }
 
-    public void deleteBook() {
-    }
+
 }
