@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -83,7 +84,12 @@ public class bookService {
     }
 
 
-    public void getBookById(Long id) {
+    public bookModel getBookById(Long id) {
+        Optional<bookModel> book= bookRepository.findById(id);
+        if(book.isEmpty()){
+            throw new ResourceNotFoundException("Nao ta aqui");
+        }
+        return book.get();
     }
 
     public void updateBook(bookRequestDTO data) {

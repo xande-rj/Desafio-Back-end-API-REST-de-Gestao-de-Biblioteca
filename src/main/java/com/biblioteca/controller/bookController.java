@@ -42,4 +42,13 @@ public class bookController {
        return this.mapper.booksToResponse(book);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<bookResponseDTO> getBookById(
+            @PathVariable(required = true) Long id
+    ){
+        bookResponseDTO book =this.mapper.bookToResponse( this.service.getBookById(id));
+
+        return new ResponseEntity<>(book,HttpStatus.OK);
+    }
+
 }
