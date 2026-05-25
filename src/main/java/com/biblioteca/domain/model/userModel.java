@@ -18,13 +18,13 @@ import java.util.List;
 public class userModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
     private String password;
-    //private List<loanModel> loan= new ArrayList<>();
-    private String cpf;
+    private String email;
+    private boolean removed;
     private LocalDate date_of_birth;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
