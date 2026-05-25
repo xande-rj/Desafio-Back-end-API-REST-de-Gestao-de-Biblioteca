@@ -10,6 +10,7 @@ import com.biblioteca.domain.repository.authorRepository;
 import com.biblioteca.domain.repository.bookRepository;
 import com.biblioteca.domain.repository.categoryRepository;
 import com.biblioteca.dto.request.bookRequestDTO;
+import com.biblioteca.dto.request.bookUpdateDTO;
 import com.biblioteca.exception.ResourceNotFoundException;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
@@ -103,7 +104,21 @@ public class bookService {
         return this.bookRepository.save(newBook);
     }
 
-    public void updateBook(bookRequestDTO data) {
+    public bookModel updateBook(Long id, bookUpdateDTO data) {
+        return this.bookRepository.findById(id).map(book ->{
+            book.setTitle(data.getTitle());
+            book.setPages(data.getPages());
+            book.setDetails(data.getDetails());
+            book.setUpdated_at(LocalDateTime.now());
+            book.setCategory(this.categoryRepository.findByTitleIgnoreCase(data.getCategory()).orElseThrow(
+                    ()-> new ResourceNotFoundException("Category not found.")));
+            return this.bookRepository.save(book);
+
+                }
+
+        ).orElseThrow(
+                ()-> new ResourceNotFoundException("Book not found"));
+
     }
 
 

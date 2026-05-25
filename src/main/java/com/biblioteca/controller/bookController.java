@@ -3,6 +3,7 @@ package com.biblioteca.controller;
 import com.biblioteca.domain.model.bookModel;
 import com.biblioteca.domain.service.bookService;
 import com.biblioteca.dto.request.bookRequestDTO;
+import com.biblioteca.dto.request.bookUpdateDTO;
 import com.biblioteca.dto.response.bookResponseDTO;
 import com.biblioteca.mapper.mapperBook;
 import jakarta.validation.Valid;
@@ -49,6 +50,14 @@ public class bookController {
         return new ResponseEntity<>(book,HttpStatus.OK);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<bookResponseDTO> updateBook(
+            @PathVariable Long id,
+            @RequestBody bookUpdateDTO data
+    ){
+        bookResponseDTO newBook = this.mapper.bookToResponse(this.service.updateBook(id,data));
+        return new ResponseEntity<>( newBook ,HttpStatus.OK);
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBook(@PathVariable Long id){
         bookResponseDTO book =this.mapper.bookToResponse( this.service.deleteBook(id));
