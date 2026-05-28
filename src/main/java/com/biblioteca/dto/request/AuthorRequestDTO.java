@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class authorRequestDTO {
+public class AuthorRequestDTO {
     @NotBlank(message = "The author must have a name.")
     private String name;
     @NotBlank(message = "The author must have a datails.")

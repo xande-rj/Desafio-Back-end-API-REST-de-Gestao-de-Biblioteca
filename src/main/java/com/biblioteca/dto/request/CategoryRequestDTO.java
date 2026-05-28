@@ -4,11 +4,9 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @Getter
 @Setter
-public class categoryRequestDTO {
+public class CategoryRequestDTO {
     @NotBlank(message = "The category must have a title")
     private String title;
 }

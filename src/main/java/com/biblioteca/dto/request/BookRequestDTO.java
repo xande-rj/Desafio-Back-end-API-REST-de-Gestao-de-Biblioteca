@@ -9,7 +9,7 @@ import lombok.Getter;
 
 
 @Getter
-public class bookRequestDTO {
+public class BookRequestDTO {
     @NotBlank(message = "The book must have a title")
     private String title;
     private String details;

@@ -14,11 +14,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
-public class categoryController {
+public class CategoryController {
     private final CategoryService service;
     private MapperCategory mapper = new MapperCategory();
 
-    public categoryController(CategoryService categoryService){
+    public CategoryController(CategoryService categoryService){
         this.service = categoryService;
     }
 

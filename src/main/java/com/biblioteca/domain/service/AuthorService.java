@@ -1,7 +1,7 @@
 package com.biblioteca.domain.service;
 
-import com.biblioteca.domain.model.authorModel;
-import com.biblioteca.domain.repository.authorRepository;
+import com.biblioteca.domain.model.AuthorModel;
+import com.biblioteca.domain.repository.AuthorRepository;
 import com.biblioteca.dto.request.AuthorRequestDTO;
 import com.biblioteca.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
@@ -10,16 +10,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class authorService {
-    private final authorRepository repository;
+public class AuthorService {
+    private final AuthorRepository repository;
 
-    public authorService(authorRepository authorRepository){
+    public AuthorService(AuthorRepository authorRepository){
         this.repository =authorRepository;
     }
 
 
-    public authorModel createdAuthor(AuthorRequestDTO data){
-        authorModel author = new authorModel();
+    public AuthorModel createdAuthor(AuthorRequestDTO data){
+        AuthorModel author = new AuthorModel();
         if(repository.existsByNameIgnoreCase(data.getName())){
             throw  new ResourceNotFoundException("A author with that name already exists.");
         }
@@ -31,7 +31,7 @@ public class authorService {
     };
 
 
-    public List<authorModel> getAllAuthors(){
+    public List<AuthorModel> getAllAuthors(){
         return this.repository.findAll();
     };
 }

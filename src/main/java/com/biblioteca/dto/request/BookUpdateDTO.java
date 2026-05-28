@@ -1,10 +1,9 @@
 package com.biblioteca.dto.request;
 
-import com.biblioteca.domain.enuns.Status;
 import lombok.Getter;
 
 @Getter
-public class bookUpdateDTO {
+public class BookUpdateDTO {
     private String title;
     private String details;
     private Long pages;

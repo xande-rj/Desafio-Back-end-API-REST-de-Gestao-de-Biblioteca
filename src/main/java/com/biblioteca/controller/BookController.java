@@ -1,6 +1,6 @@
 package com.biblioteca.controller;
 
-import com.biblioteca.domain.model.bookModel;
+import com.biblioteca.domain.model.BookModel;
 import com.biblioteca.domain.service.BookService;
 import com.biblioteca.dto.request.BookRequestDTO;
 import com.biblioteca.dto.request.BookUpdateDTO;
@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/books")
-public class bookController {
+public class BookController {
     private final BookService service;
     private final MapperBook mapper = new MapperBook();
 
-    public bookController(BookService bookService){
+    public BookController(BookService bookService){
         this.service = bookService;
     }
     @PostMapping
@@ -38,7 +38,7 @@ public class bookController {
     ){
         Pageable pageable = PageRequest.of(page,size);
 
-            Page<bookModel> book = this.service.getAllBook(pageable,search);
+            Page<BookModel> book = this.service.getAllBook(pageable,search);
 
        return this.mapper.booksToResponse(book);
     }

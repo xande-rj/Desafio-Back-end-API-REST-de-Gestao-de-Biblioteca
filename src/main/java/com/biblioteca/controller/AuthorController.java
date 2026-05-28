@@ -14,11 +14,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/authors")
-public class authorController {
+public class AuthorController {
     private final AuthorService service;
     private final MapperAuthor mapper = new MapperAuthor();
 
-    public authorController(AuthorService authorService) {
+    public AuthorController(AuthorService authorService) {
         this.service = authorService;
     }
 

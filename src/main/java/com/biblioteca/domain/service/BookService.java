@@ -2,13 +2,13 @@ package com.biblioteca.domain.service;
 
 import com.biblioteca.domain.enuns.Status;
 
-import com.biblioteca.domain.model.authorModel;
-import com.biblioteca.domain.model.bookModel;
+import com.biblioteca.domain.model.AuthorModel;
+import com.biblioteca.domain.model.BookModel;
 
-import com.biblioteca.domain.model.categoryModel;
-import com.biblioteca.domain.repository.authorRepository;
-import com.biblioteca.domain.repository.bookRepository;
-import com.biblioteca.domain.repository.categoryRepository;
+import com.biblioteca.domain.model.CategoryModel;
+import com.biblioteca.domain.repository.AuthorRepository;
+import com.biblioteca.domain.repository.BookRepository;
+import com.biblioteca.domain.repository.CategoryRepository;
 import com.biblioteca.dto.request.BookRequestDTO;
 import com.biblioteca.dto.request.BookUpdateDTO;
 import com.biblioteca.exception.ResourceNotFoundException;
@@ -24,22 +24,22 @@ import java.util.Optional;
 
 
 @Service
-public class bookService {
-    private final bookRepository bookRepository;
-    private final authorRepository authorRepository;
-    private final categoryRepository categoryRepository;
+public class BookService {
+    private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
+    private final CategoryRepository categoryRepository;
 
-    public bookService(bookRepository bookRepository,
-                       authorRepository authorRepository,
-                       categoryRepository categoryRepository) {
+    public BookService(BookRepository bookRepository,
+                       AuthorRepository authorRepository,
+                       CategoryRepository categoryRepository) {
 
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.categoryRepository = categoryRepository;
     }
 
-    public bookModel createdBook(BookRequestDTO data) {
-        bookModel book = new bookModel();
+    public BookModel createdBook(BookRequestDTO data) {
+        BookModel book = new BookModel();
         if(bookRepository.existsByTitle(data.getTitle())){
             throw  new ResourceNotFoundException("A book with that title already exists.");
         }
@@ -57,16 +57,16 @@ public class bookService {
 
     }
 
-    public Page<bookModel> getAllBook(Pageable pageable, String search) {
+    public Page<BookModel> getAllBook(Pageable pageable, String search) {
         if (search.isBlank()) {
             return this.bookRepository.findAll(pageable);
         }
 
-        Specification<bookModel> spec =
+        Specification<BookModel> spec =
                 (root, query, criteriaBuilder) -> {
                     query.distinct(true);
-                    Join<bookModel, authorModel> author = root.join("author", JoinType.LEFT);
-                    Join<bookModel, categoryModel> category = root.join("category", JoinType.LEFT);
+                    Join<BookModel, AuthorModel> author = root.join("author", JoinType.LEFT);
+                    Join<BookModel, CategoryModel> category = root.join("category", JoinType.LEFT);
 
                     String like = "%" + search.toLowerCase() + "%";
                     return criteriaBuilder.or(
@@ -85,26 +85,26 @@ public class bookService {
     }
 
 
-    public bookModel getBookById(Long id) {
-        Optional<bookModel> book= bookRepository.findById(id);
+    public BookModel getBookById(Long id) {
+        Optional<BookModel> book= bookRepository.findById(id);
         if(book.isEmpty()){
             throw new ResourceNotFoundException("The book you're looking for is currently unavailable.");
         }
         return book.get();
     }
 
-    public bookModel deleteBook(Long id) {
-        Optional<bookModel> book = this.bookRepository.findById(id);
+    public BookModel deleteBook(Long id) {
+        Optional<BookModel> book = this.bookRepository.findById(id);
         if(book.isEmpty()){
             throw new ResourceNotFoundException("The book you're looking for is currently unavailable.");
         }
-        bookModel newBook = book.get();
+        BookModel newBook = book.get();
         newBook.setStatus(Status.UNAVAILABLE);
         newBook.setRemoved(true);
         return this.bookRepository.save(newBook);
     }
 
-    public bookModel updateBook(Long id, BookUpdateDTO data) {
+    public BookModel updateBook(Long id, BookUpdateDTO data) {
         return this.bookRepository.findById(id).map(book ->{
             book.setTitle(data.getTitle());
             book.setPages(data.getPages());

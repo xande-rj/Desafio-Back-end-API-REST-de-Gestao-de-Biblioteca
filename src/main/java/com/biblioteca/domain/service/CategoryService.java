@@ -2,8 +2,8 @@ package com.biblioteca.domain.service;
 
 
 
-import com.biblioteca.domain.model.categoryModel;
-import com.biblioteca.domain.repository.categoryRepository;
+import com.biblioteca.domain.model.CategoryModel;
+import com.biblioteca.domain.repository.CategoryRepository;
 import com.biblioteca.dto.request.CategoryRequestDTO;
 import com.biblioteca.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
@@ -12,15 +12,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class categoryService {
-    private final categoryRepository repository;
+public class CategoryService {
+    private final CategoryRepository repository;
 
-    public categoryService(categoryRepository categoryRepository){
+    public CategoryService(CategoryRepository categoryRepository){
         this.repository =categoryRepository;
     }
 
-    public categoryModel createdCategory(CategoryRequestDTO data){
-        categoryModel category = new categoryModel();
+    public CategoryModel createdCategory(CategoryRequestDTO data){
+        CategoryModel category = new CategoryModel();
         if(repository.existsByTitleIgnoreCase(data.getTitle())){
             throw  new ResourceNotFoundException("A category with that title already exists.");
         }
@@ -30,7 +30,7 @@ public class categoryService {
     };
 
 
-    public List<categoryModel> getAllCategorys(){
+    public List<CategoryModel> getAllCategorys(){
         return this.repository.findAll();
     };
 }

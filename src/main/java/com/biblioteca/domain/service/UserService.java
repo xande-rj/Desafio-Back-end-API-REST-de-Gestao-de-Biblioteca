@@ -1,8 +1,8 @@
 package com.biblioteca.domain.service;
 
 import com.biblioteca.domain.enuns.Roles;
-import com.biblioteca.domain.model.userModel;
-import com.biblioteca.domain.repository.userRepository;
+import com.biblioteca.domain.model.UserModel;
+import com.biblioteca.domain.repository.UserRepository;
 import com.biblioteca.dto.request.UserRequestDTO;
 import com.biblioteca.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
@@ -11,18 +11,18 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-public class userService {
-    private final userRepository repository;
+public class UserService {
+    private final UserRepository repository;
 
-    public userService(userRepository userRepository) {
+    public UserService(UserRepository userRepository) {
         this.repository = userRepository;
     }
 
-    public userModel saveUser(UserRequestDTO data) {
+    public UserModel saveUser(UserRequestDTO data) {
         if (this.repository.findByEmail(data.getEmail()).isPresent()) {
             throw new ResourceNotFoundException("email ja cadastrado");
         }
-        userModel user = new userModel();
+        UserModel user = new UserModel();
         user.setName(data.getName());
         user.setEmail(data.getEmail());
         user.setPassword(data.getPassword());

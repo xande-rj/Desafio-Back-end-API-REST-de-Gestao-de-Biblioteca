@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @JsonPropertyOrder({"id","title","details","pages","status","removed","created_at","author","category"})
-public class bookResponseDTO {
+public class BookResponseDTO {
     private Long id;
     private String title;
     private String details;
@@ -21,5 +21,5 @@ public class bookResponseDTO {
     private boolean removed;
     private LocalDateTime created_at;
     private AuthorResponseDTO author;
-    private  categoryResponseDTO category;
+    private CategoryResponseDTO category;
 }

@@ -11,7 +11,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @JsonPropertyOrder({"id","name","details"})
-public class authorResponseDTO {
+public class AuthorResponseDTO {
     private UUID id;
     private String name;
     private String details;

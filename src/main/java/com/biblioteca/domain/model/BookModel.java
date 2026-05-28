@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class bookModel {
+public class BookModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,7 +30,7 @@ public class bookModel {
 
     @ManyToOne
     @JoinColumn(name = "author_id",nullable = false)
-    private authorModel author;
+    private AuthorModel author;
 
     @ManyToOne
     @JoinColumn(name = "category_id",nullable = false)

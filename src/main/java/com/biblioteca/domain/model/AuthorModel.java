@@ -13,7 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-public class authorModel {
+public class AuthorModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
