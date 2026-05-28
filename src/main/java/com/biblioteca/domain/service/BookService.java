@@ -9,8 +9,8 @@ import com.biblioteca.domain.model.categoryModel;
 import com.biblioteca.domain.repository.authorRepository;
 import com.biblioteca.domain.repository.bookRepository;
 import com.biblioteca.domain.repository.categoryRepository;
-import com.biblioteca.dto.request.bookRequestDTO;
-import com.biblioteca.dto.request.bookUpdateDTO;
+import com.biblioteca.dto.request.BookRequestDTO;
+import com.biblioteca.dto.request.BookUpdateDTO;
 import com.biblioteca.exception.ResourceNotFoundException;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
@@ -38,7 +38,7 @@ public class bookService {
         this.categoryRepository = categoryRepository;
     }
 
-    public bookModel createdBook(bookRequestDTO data) {
+    public bookModel createdBook(BookRequestDTO data) {
         bookModel book = new bookModel();
         if(bookRepository.existsByTitle(data.getTitle())){
             throw  new ResourceNotFoundException("A book with that title already exists.");
@@ -104,7 +104,7 @@ public class bookService {
         return this.bookRepository.save(newBook);
     }
 
-    public bookModel updateBook(Long id, bookUpdateDTO data) {
+    public bookModel updateBook(Long id, BookUpdateDTO data) {
         return this.bookRepository.findById(id).map(book ->{
             book.setTitle(data.getTitle());
             book.setPages(data.getPages());

@@ -4,6 +4,7 @@ name VARCHAR(255) NOT NULL,
 password VARCHAR(255) NOT NULL,
 email VARCHAR(254),
 removed BOOLEAN,
+role VARCHAR(50),
 date_of_birth TIMESTAMP,
 created_at TIMESTAMP,
 updated_at TIMESTAMP

@@ -1,5 +1,6 @@
 package com.biblioteca.domain.model;
 
+import com.biblioteca.domain.enuns.Roles;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class userModel {
     private String password;
     private String email;
     private boolean removed;
+    private Roles role;
     private LocalDate date_of_birth;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;

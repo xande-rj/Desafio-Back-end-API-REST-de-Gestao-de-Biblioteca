@@ -4,8 +4,7 @@ package com.biblioteca.domain.service;
 
 import com.biblioteca.domain.model.categoryModel;
 import com.biblioteca.domain.repository.categoryRepository;
-import com.biblioteca.dto.request.authorRequestDTO;
-import com.biblioteca.dto.request.categoryRequestDTO;
+import com.biblioteca.dto.request.CategoryRequestDTO;
 import com.biblioteca.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,7 @@ public class categoryService {
         this.repository =categoryRepository;
     }
 
-    public categoryModel createdCategory(categoryRequestDTO data){
+    public categoryModel createdCategory(CategoryRequestDTO data){
         categoryModel category = new categoryModel();
         if(repository.existsByTitleIgnoreCase(data.getTitle())){
             throw  new ResourceNotFoundException("A category with that title already exists.");

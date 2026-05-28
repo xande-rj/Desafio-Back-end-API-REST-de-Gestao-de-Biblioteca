@@ -1,5 +1,6 @@
 package com.biblioteca.domain.service;
 
+import com.biblioteca.domain.enuns.Roles;
 import com.biblioteca.domain.model.userModel;
 import com.biblioteca.domain.repository.userRepository;
 import com.biblioteca.dto.request.UserRequestDTO;
@@ -29,6 +30,7 @@ public class userService {
         user.setCreated_at(LocalDateTime.now());
         user.setUpdated_at(LocalDateTime.now());
         user.setRemoved(false);
+        user.setRole(Roles.READER);
         return this.repository.save(user);
     }
 

@@ -2,7 +2,7 @@ package com.biblioteca.domain.service;
 
 import com.biblioteca.domain.model.authorModel;
 import com.biblioteca.domain.repository.authorRepository;
-import com.biblioteca.dto.request.authorRequestDTO;
+import com.biblioteca.dto.request.AuthorRequestDTO;
 import com.biblioteca.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class authorService {
     }
 
 
-    public authorModel createdAuthor(authorRequestDTO data){
+    public authorModel createdAuthor(AuthorRequestDTO data){
         authorModel author = new authorModel();
         if(repository.existsByNameIgnoreCase(data.getName())){
             throw  new ResourceNotFoundException("A author with that name already exists.");

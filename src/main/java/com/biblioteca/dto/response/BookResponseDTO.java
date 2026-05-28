@@ -20,6 +20,6 @@ public class bookResponseDTO {
     private Status status;
     private boolean removed;
     private LocalDateTime created_at;
-    private authorResponseDTO author;
+    private AuthorResponseDTO author;
     private  categoryResponseDTO category;
 }

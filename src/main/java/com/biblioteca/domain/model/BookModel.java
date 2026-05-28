@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "TB_books")
@@ -35,5 +34,5 @@ public class bookModel {
 
     @ManyToOne
     @JoinColumn(name = "category_id",nullable = false)
-    private categoryModel category;
+    private CategoryModel category;
 }
