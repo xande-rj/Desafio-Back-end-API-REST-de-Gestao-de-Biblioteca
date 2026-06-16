@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "TB_user")
@@ -28,4 +30,13 @@ public class UserModel {
     private LocalDate date_of_birth;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
+
+    @ManyToOne
+    @JoinColumn(name = "historical_id")
+    private List<LoanModel> historical = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "loans_id")
+    private List<LoanModel> loans = new ArrayList<>();
+
 }
