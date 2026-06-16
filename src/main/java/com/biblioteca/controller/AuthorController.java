@@ -16,7 +16,6 @@ import java.util.List;
 @RequestMapping("/api/authors")
 public class AuthorController {
     private final AuthorService service;
-    private final MapperAuthor mapper = new MapperAuthor();
 
     public AuthorController(AuthorService authorService) {
         this.service = authorService;
@@ -24,13 +23,11 @@ public class AuthorController {
 
     @PostMapping
     public ResponseEntity<AuthorResponseDTO> saveAuthor(@RequestBody @Valid AuthorRequestDTO data) {
-        AuthorResponseDTO author = mapper.authorToResponse(this.service.createdAuthor(data));
-        return new ResponseEntity<AuthorResponseDTO>(author, HttpStatus.CREATED);
+        return new ResponseEntity<AuthorResponseDTO>(this.service.createdAuthor(data), HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<AuthorResponseDTO>> getAllAuthors() {
-        List<AuthorResponseDTO> authors = mapper.authorsToResponse(this.service.getAllAuthors());
-        return new ResponseEntity<List<AuthorResponseDTO>> (authors, HttpStatus.OK);
+        return new ResponseEntity<List<AuthorResponseDTO>> (this.service.getAllAuthors(), HttpStatus.OK);
     }
 }

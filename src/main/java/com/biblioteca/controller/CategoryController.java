@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/api/categories")
 public class CategoryController {
     private final CategoryService service;
-    private MapperCategory mapper = new MapperCategory();
+
 
     public CategoryController(CategoryService categoryService){
         this.service = categoryService;
@@ -24,13 +24,12 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<CategoryResponseDTO> createdCategory(@Valid @RequestBody CategoryRequestDTO data){
-        CategoryResponseDTO category = this.mapper.categoryToResponse(this.service.createdCategory(data));
-        return new ResponseEntity<CategoryResponseDTO>(category, HttpStatus.CREATED);
+        return new ResponseEntity<CategoryResponseDTO>(this.service.createdCategory(data), HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<CategoryResponseDTO>> getAllCategory(){
-        List<CategoryResponseDTO> categorys = this.mapper.categorysToResponse(this.service.getAllCategorys());
-        return new ResponseEntity<List<CategoryResponseDTO>>(categorys, HttpStatus.OK);
+
+        return new ResponseEntity<List<CategoryResponseDTO>>(this.service.getAllCategorys(), HttpStatus.OK);
     }
 }

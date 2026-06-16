@@ -4,6 +4,7 @@ import com.biblioteca.domain.service.UserService;
 import com.biblioteca.dto.request.UserRequestDTO;
 import com.biblioteca.dto.request.UserUpdateDTO;
 import com.biblioteca.dto.response.UserResponseDTO;
+import com.biblioteca.dto.response.UserTokenResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> saveUser(@RequestBody UserRequestDTO data){
+    public ResponseEntity<UserTokenResponseDTO> saveUser(@RequestBody UserRequestDTO data){
         return new ResponseEntity<>(this.service.saveUser(data), HttpStatus.CREATED);
     }
 

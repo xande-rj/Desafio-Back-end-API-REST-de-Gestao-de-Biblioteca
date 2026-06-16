@@ -19,49 +19,43 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/books")
 public class BookController {
     private final BookService service;
-    private final MapperBook mapper = new MapperBook();
 
-    public BookController(BookService bookService){
+    public BookController(BookService bookService) {
         this.service = bookService;
     }
-    @PostMapping
-    public ResponseEntity<BookResponseDTO> createdBook(@RequestBody @Valid BookRequestDTO data){
-        BookResponseDTO newBook = this.mapper.bookToResponse(service.createdBook(data));
 
-        return new ResponseEntity<BookResponseDTO>(newBook,HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<BookResponseDTO> createdBook(@RequestBody @Valid BookRequestDTO data) {
+        return new ResponseEntity<BookResponseDTO>(service.createdBook(data), HttpStatus.CREATED);
     }
+
     @GetMapping
     public Page<BookResponseDTO> getBooks(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "1") int size,
             @RequestParam(defaultValue = "") String search
-    ){
-        Pageable pageable = PageRequest.of(page,size);
-
-            Page<BookModel> book = this.service.getAllBook(pageable,search);
-
-       return this.mapper.booksToResponse(book);
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return this.service.getAllBook(pageable, search);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookResponseDTO> getBookById(@PathVariable(required = true) Long id){
-        BookResponseDTO book =this.mapper.bookToResponse( this.service.getBookById(id));
-
-        return new ResponseEntity<>(book,HttpStatus.OK);
+    public ResponseEntity<BookResponseDTO> getBookById(@PathVariable(required = true) Long id) {
+        return new ResponseEntity<>(this.service.getBookById(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<BookResponseDTO> updateBook(
             @PathVariable Long id,
             @RequestBody BookUpdateDTO data
-    ){
-        BookResponseDTO newBook = this.mapper.bookToResponse(this.service.updateBook(id,data));
-        return new ResponseEntity<>( newBook ,HttpStatus.OK);
+    ) {
+        return new ResponseEntity<>(this.service.updateBook(id, data), HttpStatus.OK);
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBook(@PathVariable Long id){
-        BookResponseDTO book =this.mapper.bookToResponse( this.service.deleteBook(id));
-        return new ResponseEntity<>(book, HttpStatus.OK);
+    public ResponseEntity<?> deleteBook(@PathVariable Long id) {
+
+        return new ResponseEntity<>( this.service.deleteBook(id), HttpStatus.OK);
     }
 
 }
