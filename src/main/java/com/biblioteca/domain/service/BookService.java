@@ -11,7 +11,9 @@ import com.biblioteca.domain.repository.BookRepository;
 import com.biblioteca.domain.repository.CategoryRepository;
 import com.biblioteca.dto.request.BookRequestDTO;
 import com.biblioteca.dto.request.BookUpdateDTO;
+import com.biblioteca.dto.response.BookResponseDTO;
 import com.biblioteca.exception.ResourceNotFoundException;
+import com.biblioteca.mapper.MapperBook;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import org.springframework.data.domain.Page;
@@ -28,6 +30,7 @@ public class BookService {
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final CategoryRepository categoryRepository;
+    private final MapperBook mapper = new MapperBook();
 
     public BookService(BookRepository bookRepository,
                        AuthorRepository authorRepository,
@@ -38,10 +41,10 @@ public class BookService {
         this.categoryRepository = categoryRepository;
     }
 
-    public BookModel createdBook(BookRequestDTO data) {
+    public BookResponseDTO createdBook(BookRequestDTO data) {
         BookModel book = new BookModel();
-        if(bookRepository.existsByTitle(data.getTitle())){
-            throw  new ResourceNotFoundException("A book with that title already exists.");
+        if (bookRepository.existsByTitle(data.getTitle())) {
+            throw new ResourceNotFoundException("A book with that title already exists.");
         }
         book.setTitle(data.getTitle());
         book.setPages(data.getPages());
@@ -53,15 +56,14 @@ public class BookService {
         book.setAuthor(authorRepository.findByNameIgnoreCase(data.getAuthor()).orElseThrow(() -> new ResourceNotFoundException("Author dont exists")));
         book.setCategory(categoryRepository.findByTitleIgnoreCase(data.getCategory()).orElseThrow(() -> new ResourceNotFoundException("Category dont exist")));
 
-        return bookRepository.save(book);
+        return this.mapper.bookToResponse(bookRepository.save(book));
 
     }
 
-    public Page<BookModel> getAllBook(Pageable pageable, String search) {
+    public Page<BookResponseDTO> getAllBook(Pageable pageable, String search) {
         if (search.isBlank()) {
-            return this.bookRepository.findAll(pageable);
+            return this.mapper.booksToResponse(this.bookRepository.findAll(pageable));
         }
-
         Specification<BookModel> spec =
                 (root, query, criteriaBuilder) -> {
                     query.distinct(true);
@@ -81,21 +83,21 @@ public class BookService {
                             )
                     );
                 };
-        return this.bookRepository.findAll(spec,pageable);
+        return this.mapper.booksToResponse(this.bookRepository.findAll(spec, pageable));
     }
 
 
-    public BookModel getBookById(Long id) {
-        Optional<BookModel> book= bookRepository.findById(id);
-        if(book.isEmpty()){
+    public BookResponseDTO getBookById(Long id) {
+        Optional<BookModel> book = bookRepository.findById(id);
+        if (book.isEmpty()) {
             throw new ResourceNotFoundException("The book you're looking for is currently unavailable.");
         }
-        return book.get();
+        return this.mapper.bookToResponse(book.get());
     }
 
     public BookModel deleteBook(Long id) {
         Optional<BookModel> book = this.bookRepository.findById(id);
-        if(book.isEmpty()){
+        if (book.isEmpty()) {
             throw new ResourceNotFoundException("The book you're looking for is currently unavailable.");
         }
         BookModel newBook = book.get();
@@ -104,20 +106,20 @@ public class BookService {
         return this.bookRepository.save(newBook);
     }
 
-    public BookModel updateBook(Long id, BookUpdateDTO data) {
-        return this.bookRepository.findById(id).map(book ->{
-            book.setTitle(data.getTitle());
-            book.setPages(data.getPages());
-            book.setDetails(data.getDetails());
-            book.setUpdated_at(LocalDateTime.now());
-            book.setCategory(this.categoryRepository.findByTitleIgnoreCase(data.getCategory()).orElseThrow(
-                    ()-> new ResourceNotFoundException("Category not found.")));
-            return this.bookRepository.save(book);
+    public BookResponseDTO updateBook(Long id, BookUpdateDTO data) {
+        return this.bookRepository.findById(id).map(book -> {
+                    book.setTitle(data.getTitle());
+                    book.setPages(data.getPages());
+                    book.setDetails(data.getDetails());
+                    book.setUpdated_at(LocalDateTime.now());
+                    book.setCategory(this.categoryRepository.findByTitleIgnoreCase(data.getCategory()).orElseThrow(
+                            () -> new ResourceNotFoundException("Category not found.")));
+                    return this.mapper.bookToResponse(this.bookRepository.save(book));
 
                 }
 
         ).orElseThrow(
-                ()-> new ResourceNotFoundException("Book not found"));
+                () -> new ResourceNotFoundException("Book not found"));
 
     }
 
