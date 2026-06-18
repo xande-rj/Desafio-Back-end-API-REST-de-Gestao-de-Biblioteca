@@ -33,10 +33,10 @@ public class UserModel {
 
     @ManyToOne
     @JoinColumn(name = "historical_id")
-    private List<LoanModel> historical = new ArrayList<>();
+    private List<LoanModel> historical;
 
     @ManyToOne
     @JoinColumn(name = "loans_id")
-    private List<LoanModel> loans = new ArrayList<>();
+    private List<LoanModel> loans;
 
 }

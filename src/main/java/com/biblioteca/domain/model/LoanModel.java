@@ -17,6 +17,7 @@ public class LoanModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private LocalDateTime create_at;
     private LocalDateTime pay_day;
     private LocalDateTime update_at;

@@ -33,7 +33,8 @@ public class UserController {
         return new ResponseEntity<>(this.service.updateUser(id,userUpdateDTO),HttpStatus.OK);
     }
     @GetMapping("/{id}/loans")
-    public void getLoan(){
+    public ResponseEntity<?> getLoan(@PathVariable Long id){
+        return ResponseEntity.status(200).body(this.service.getLoanUser(id));
 
     }
 }

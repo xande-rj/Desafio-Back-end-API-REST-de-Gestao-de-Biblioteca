@@ -1,10 +1,12 @@
 package com.biblioteca.domain.service;
 
 import com.biblioteca.domain.enuns.Roles;
+import com.biblioteca.domain.model.LoanModel;
 import com.biblioteca.domain.model.UserModel;
 import com.biblioteca.domain.repository.UserRepository;
 import com.biblioteca.dto.request.UserRequestDTO;
 import com.biblioteca.dto.request.UserUpdateDTO;
+import com.biblioteca.dto.response.LoansResponseDTO;
 import com.biblioteca.dto.response.UserResponseDTO;
 import com.biblioteca.dto.response.UserTokenResponseDTO;
 import com.biblioteca.exception.ResourceNotFoundException;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,5 +56,9 @@ public class UserService {
 
         return this.mapperUser.userToDto(this.repository.save(user));
     }
+
+public List<LoanModel> getLoanUser(Long id){
+        return this.repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("DASDAAD")).getLoans();
+}
 
 }
