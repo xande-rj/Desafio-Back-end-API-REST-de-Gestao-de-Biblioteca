@@ -5,7 +5,7 @@ password VARCHAR(255) NOT NULL,
 email VARCHAR(254),
 removed BOOLEAN,
 role VARCHAR(50),
-date_of_birth TIMESTAMP,
+date_of_birth DATE,
 created_at TIMESTAMP,
 updated_at TIMESTAMP
 );
