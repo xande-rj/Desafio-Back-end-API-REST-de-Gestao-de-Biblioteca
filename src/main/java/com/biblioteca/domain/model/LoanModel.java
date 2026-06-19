@@ -1,5 +1,6 @@
 package com.biblioteca.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,11 @@ public class LoanModel {
     private LocalDateTime update_at;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserModel user;
+
+    @ManyToOne
     @JoinColumn(name = "book_id",nullable = false)
+    @JsonManagedReference
     private BookModel book;
 }

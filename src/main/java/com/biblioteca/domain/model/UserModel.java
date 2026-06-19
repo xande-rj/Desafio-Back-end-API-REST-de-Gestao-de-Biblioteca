@@ -31,12 +31,13 @@ public class UserModel {
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
-    @ManyToOne
-    @JoinColumn(name = "historical_id")
-    private List<LoanModel> historical;
 
-    @ManyToOne
-    @JoinColumn(name = "loans_id")
-    private List<LoanModel> loans;
+    @OneToMany(mappedBy = "user")
+    private List<LoanModel> loans = new ArrayList<>();
+
+
+    //    @OneToMany
+//    @JoinColumn(name = "historical_id")
+//    private List<LoanModel> historical= new ArrayList<>();
 
 }

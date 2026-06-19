@@ -1,0 +1,14 @@
+INSERT INTO tb_loans (
+    create_at,
+    pay_day,
+    update_at,
+    user_id,
+    book_id
+)
+VALUES (
+    CURRENT_TIMESTAMP,
+    DATEADD('DAY', 14, CURRENT_TIMESTAMP),
+    CURRENT_TIMESTAMP,
+    1,
+    1
+);
