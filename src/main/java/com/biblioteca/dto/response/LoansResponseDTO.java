@@ -9,11 +9,11 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@NoArgsConstructor
-public class LoansResponseDTO {
-    private Long id;
-    private LocalDateTime create_at;
-    private LocalDateTime pay_day;
-    private LocalDateTime update_at;
-    private BookResponseDTO book;
+public class LoansResponseDTO{
+     private Long id;
+     LocalDateTime create_at;
+     LocalDateTime pay_day;
+     LocalDateTime update_at;
+     BookResponseDTO book;
+
 }

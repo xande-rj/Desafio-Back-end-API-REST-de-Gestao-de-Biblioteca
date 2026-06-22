@@ -31,4 +31,12 @@ return ResponseEntity.badRequest().body(errors);
                 .body(ex.getMessage());
     }
 
+
+    @ExceptionHandler(LimitBooksException.class)
+    public ResponseEntity<String> LimitBooks(LimitBooksException ex) {
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
+    }
 }

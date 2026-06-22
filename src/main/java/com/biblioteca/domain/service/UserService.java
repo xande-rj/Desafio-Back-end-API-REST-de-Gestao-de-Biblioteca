@@ -47,12 +47,12 @@ public class UserService {
     }
 
     public UserResponseDTO getUseById(Long id) {
-        UserModel user = this.repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("dsada"));
+        UserModel user = this.repository.findById(id).orElseThrow(() ->  new ResourceNotFoundException("Usuario nao encontrado"));
         return this.mapperUser.userToDto(user);
     }
 
     public UserResponseDTO updateUser(Long id, UserUpdateDTO userUpdateDTO) {
-        UserModel user = this.repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("DASDAAD"));
+        UserModel user = this.repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuario nao encontrado"));
         user.setName(userUpdateDTO.getName());
         user.setEmail(userUpdateDTO.getEmail());
 
@@ -60,7 +60,7 @@ public class UserService {
     }
 
 public List<BookResponseDTO> getLoanUser(Long id){
-        return this.repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("DASDAAD")).getLoans().stream().map(
+        return this.repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuario nao encontrado")).getLoans().stream().map(
                 l->
                         this.mapperBook.bookToResponse(l.getBook())
         ).toList();
