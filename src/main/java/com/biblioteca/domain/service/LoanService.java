@@ -11,6 +11,7 @@ import com.biblioteca.dto.request.LoanResquestDTO;
 import com.biblioteca.dto.response.LoansResponseDTO;
 import com.biblioteca.exception.LimitBooksException;
 import com.biblioteca.exception.ResourceNotFoundException;
+import com.biblioteca.exception.UnavailableBooksException;
 import com.biblioteca.mapper.MapperLoan;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,7 @@ public class LoanService {
             throw new LimitBooksException("user nao pode ter mais de 3 livros");
         }
         if (book.getStatus() == Status.UNAVAILABLE || book.isRemoved()) {
-            new RuntimeException("livro nao esta disponivel para emprestimo");
+            throw new UnavailableBooksException("livro nao esta disponivel para emprestimo");
         }
 
         LoanModel loanModel = new LoanModel();
@@ -49,7 +50,8 @@ public class LoanService {
         loanModel.setUser(user);
         LoanModel newLoan = this.loanRepository.save(loanModel);
         user.getLoans().add(newLoan);
-
+book.setStatus(Status.UNAVAILABLE);
+this.bookRepository.save((book));
 
         return mapperLoan.loansResponseDTO(this.userRepository.save(user).getLoans().getLast());
     }

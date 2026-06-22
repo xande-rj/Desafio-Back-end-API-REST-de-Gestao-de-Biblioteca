@@ -39,4 +39,12 @@ return ResponseEntity.badRequest().body(errors);
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ex.getMessage());
     }
+
+    @ExceptionHandler(UnavailableBooksException.class)
+    public ResponseEntity<String> UnavailableBooks(UnavailableBooksException ex) {
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
+    }
 }
