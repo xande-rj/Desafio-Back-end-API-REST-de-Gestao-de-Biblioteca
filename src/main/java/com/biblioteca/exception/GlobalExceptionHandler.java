@@ -1,8 +1,8 @@
 package com.biblioteca.exception;
 
-import com.biblioteca.domain.model.LoanModel;
-import com.biblioteca.dto.response.LoansResponseDTO;
-import com.biblioteca.dto.response.UnavailableBookResponseDTO;
+
+import com.biblioteca.dto.response.PenaltyResponseDTO;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -53,11 +53,11 @@ return ResponseEntity.badRequest().body(errors);
 
 
     @ExceptionHandler(PenaltyLoanException.class)
-    public ResponseEntity<UnavailableBookResponseDTO> PenaltyBooks(PenaltyLoanException ex) {
+    public ResponseEntity<PenaltyResponseDTO> PenaltyBooks(PenaltyLoanException ex) {
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new UnavailableBookResponseDTO(
+                .body(new PenaltyResponseDTO(
                         ex.getMessage(),
                         HttpStatus.BAD_REQUEST,
                         ex.getLoan()

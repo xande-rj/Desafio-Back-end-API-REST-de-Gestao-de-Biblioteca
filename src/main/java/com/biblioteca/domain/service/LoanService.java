@@ -8,6 +8,7 @@ import com.biblioteca.domain.repository.BookRepository;
 import com.biblioteca.domain.repository.LoanRepository;
 import com.biblioteca.domain.repository.UserRepository;
 import com.biblioteca.dto.request.LoanResquestDTO;
+import com.biblioteca.dto.response.LoanReturnResponseDTO;
 import com.biblioteca.dto.response.LoansResponseDTO;
 import com.biblioteca.exception.LimitBooksException;
 import com.biblioteca.exception.PenaltyLoanException;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LoanService {
@@ -41,9 +42,10 @@ public class LoanService {
         if (user.getLoans().size() >= 3) {
             throw new LimitBooksException("user nao pode ter mais de 3 livros");
         }
-        for(LoanModel l: user.getLoans()){
-            Long periodo = ChronoUnit.DAYS.between(l.getCreate_at(),LocalDateTime.now());
-            if(periodo>=14)  throw new PenaltyLoanException("Multa por atraso em espera " ,mapperLoan.loansResponseDTO(l));
+        for (LoanModel l : user.getLoans()) {
+            long periodo = ChronoUnit.DAYS.between(l.getCreate_at(), LocalDateTime.now());
+            if (periodo >= 14)
+                throw new PenaltyLoanException("Multa por atraso em espera ", mapperLoan.loansResponseDTO(l));
         }
         if (book.getStatus() == Status.UNAVAILABLE || book.isRemoved()) {
             throw new UnavailableBooksException("livro nao esta disponivel para emprestimo");
@@ -56,25 +58,29 @@ public class LoanService {
         loanModel.setUser(user);
         LoanModel newLoan = this.loanRepository.save(loanModel);
         user.getLoans().add(newLoan);
-book.setStatus(Status.UNAVAILABLE);
-this.bookRepository.save((book));
+        book.setStatus(Status.UNAVAILABLE);
+        book.setUpdated_at(LocalDateTime.now());
+
+        this.bookRepository.save((book));
 
         return mapperLoan.loansResponseDTO(this.userRepository.save(user).getLoans().getLast());
     }
-    public String loanReturn(Long id){
+
+    public LoanReturnResponseDTO loanReturn(Long id) {
 
         LoanModel loan = this.loanRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("emprestimo nao encontrado"));
 
-        Long periodo = ChronoUnit.DAYS.between(loan.getCreate_at(),LocalDateTime.now());
-
-        if(periodo>14){
-            Long i = periodo-14;
-            System.out.println(i*0.5);
-            Float multa = i*0.5F;
-            System.out.println(multa);
-
+        Long periodo = ChronoUnit.DAYS.between(loan.getCreate_at(), LocalDateTime.now());
+        Float multa=0F;
+        if (periodo >= 14) {
+            Long i = periodo - 14;
+            multa+= i * 0.5F;
         }
+        Optional<BookModel> bookModel = this.bookRepository.findById(loan.getBook().getId());
+        bookModel.get().setStatus(Status.AVAILABLE);
+        bookModel.get().setUpdated_at(LocalDateTime.now());
 
-        return null;
+
+        return new LoanReturnResponseDTO(multa);
     }
 }
