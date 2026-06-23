@@ -35,7 +35,8 @@ public class LoanService {
     }
 
     public LoansResponseDTO addLoan(LoanResquestDTO dto) {
-        UserModel user = this.userRepository.findById(dto.getIdUser()).orElseThrow(() -> new ResourceNotFoundException("user nao encontrado"));
+        UserModel user = this.userRepository.findById(dto.getIdUser()).orElseThrow(()
+                -> new ResourceNotFoundException("user nao encontrado"));
 
         BookModel book = this.bookRepository.findById(dto.getIdBook()).orElseThrow(() -> new ResourceNotFoundException("livro nao encontrado"));
 

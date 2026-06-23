@@ -1,6 +1,7 @@
 package com.biblioteca.exception;
 
 
+import com.biblioteca.dto.response.ErroResponseDTO;
 import com.biblioteca.dto.response.PenaltyResponseDTO;
 
 import org.springframework.http.HttpStatus;
@@ -27,28 +28,39 @@ return ResponseEntity.badRequest().body(errors);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<String> handleNotFound(ResourceNotFoundException ex) {
-
+    public ResponseEntity<ErroResponseDTO> handleNotFound(ResourceNotFoundException ex) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(ex.getMessage());
+                .body(new ErroResponseDTO(
+                        ex.getMessage(),
+                        HttpStatus.NOT_FOUND
+                        )
+                );
     }
 
 
     @ExceptionHandler(LimitBooksException.class)
-    public ResponseEntity<String> LimitBooks(LimitBooksException ex) {
+    public ResponseEntity<ErroResponseDTO> LimitBooks(LimitBooksException ex) {
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ex.getMessage());
+                .body(new ErroResponseDTO(
+                        ex.getMessage(),
+                        HttpStatus.BAD_REQUEST
+                ));
     }
 
     @ExceptionHandler(UnavailableBooksException.class)
-    public ResponseEntity<String> UnavailableBooks(UnavailableBooksException ex) {
+    public ResponseEntity<ErroResponseDTO> UnavailableBooks(UnavailableBooksException ex) {
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ex.getMessage());
+                .body(
+                        new ErroResponseDTO(
+                                ex.getMessage(),
+                                HttpStatus.NOT_FOUND
+                        )
+                );
     }
 
 
