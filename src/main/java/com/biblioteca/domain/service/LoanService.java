@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -83,5 +85,21 @@ public class LoanService {
 
 
         return new LoanReturnResponseDTO(multa);
+    }
+
+    public List<LoansResponseDTO>overdueLoans(){
+        List<LoanModel> loans = new ArrayList<>();
+        List<UserModel> users = this.userRepository.findAll();
+
+        for(UserModel u :users){
+            for(LoanModel l : u.getLoans()){
+                Long periodo = ChronoUnit.DAYS.between(l.getCreate_at(), LocalDateTime.now());
+
+                if(periodo>=14) {
+                    loans.add(l);
+                }
+            }
+        }
+        return mapperLoan.listLoanResponse(loans);
     }
 }

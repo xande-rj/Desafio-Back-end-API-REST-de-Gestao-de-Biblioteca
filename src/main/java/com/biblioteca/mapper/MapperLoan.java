@@ -4,10 +4,17 @@ import com.biblioteca.domain.model.LoanModel;
 import com.biblioteca.dto.response.LoansResponseDTO;
 import org.modelmapper.ModelMapper;
 
+import java.util.List;
+
 public class MapperLoan {
     private final ModelMapper modelMapper = new ModelMapper();
 
     public LoansResponseDTO loansResponseDTO(LoanModel loan){
         return this.modelMapper.map(loan,LoansResponseDTO.class);
+    }
+
+    public List<LoansResponseDTO> listLoanResponse(List<LoanModel> loan){
+        return loan.stream().map(loanModel ->
+                this.modelMapper.map(loanModel,LoansResponseDTO.class)).toList();
     }
 }
