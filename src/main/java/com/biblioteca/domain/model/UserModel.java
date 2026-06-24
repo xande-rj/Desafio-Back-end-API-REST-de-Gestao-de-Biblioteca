@@ -36,8 +36,7 @@ public class UserModel {
     private List<LoanModel> loans = new ArrayList<>();
 
 
-    //    @OneToMany
-//    @JoinColumn(name = "historical_id")
-//    private List<LoanModel> historical= new ArrayList<>();
+    @OneToMany(mappedBy = "historical_user")
+    private List<LoanModel> historical= new ArrayList<>();
 
 }

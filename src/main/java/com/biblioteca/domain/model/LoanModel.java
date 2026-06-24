@@ -28,6 +28,10 @@ public class LoanModel {
     private UserModel user;
 
     @ManyToOne
+    @JoinColumn(name = "historical_user_id")
+    private UserModel historical_user;
+
+    @ManyToOne
     @JoinColumn(name = "book_id",nullable = false)
     @JsonManagedReference
     private BookModel book;

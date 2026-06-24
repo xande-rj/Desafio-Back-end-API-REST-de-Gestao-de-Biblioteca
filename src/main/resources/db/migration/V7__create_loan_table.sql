@@ -4,11 +4,17 @@ create_at TIMESTAMP NOT NULL,
 pay_day TIMESTAMP,
 update_at TIMESTAMP,
 
-  user_id BIGINT NOT NULL,
+  user_id BIGINT,
+  historical_user_id BIGINT ,
+
     book_id BIGINT NOT NULL,
 
     CONSTRAINT fk_loan_user
         FOREIGN KEY (user_id)
+        REFERENCES tb_user(id),
+
+CONSTRAINT fk_loan_historical_user
+        FOREIGN KEY (historical_user_id)
         REFERENCES tb_user(id),
 
     CONSTRAINT fk_loan_book

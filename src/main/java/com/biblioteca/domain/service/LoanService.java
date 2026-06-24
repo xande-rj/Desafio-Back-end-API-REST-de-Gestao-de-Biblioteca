@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -79,10 +80,23 @@ public class LoanService {
             Long i = periodo - 14;
             multa+= i * 0.5F;
         }
+        loan.setUpdate_at(LocalDateTime.now());
+                loan.setPay_day(LocalDateTime.now());
+
         Optional<BookModel> bookModel = this.bookRepository.findById(loan.getBook().getId());
         bookModel.get().setStatus(Status.AVAILABLE);
         bookModel.get().setUpdated_at(LocalDateTime.now());
 
+        Optional<UserModel> userModel = this.userRepository.findById(loan.getUser().getId());
+
+
+
+        loan.setUser(null);
+        loan.setHistorical_user(userModel.get());
+        userModel.get().getHistorical().add(loan);
+        this.userRepository.save(userModel.get());
+        this.bookRepository.save(bookModel.get());
+         this.loanRepository.save(loan);
 
         return new LoanReturnResponseDTO(multa);
     }
