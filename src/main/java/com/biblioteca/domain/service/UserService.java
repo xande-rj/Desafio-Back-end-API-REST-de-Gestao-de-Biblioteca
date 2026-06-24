@@ -6,11 +6,13 @@ import com.biblioteca.domain.model.UserModel;
 import com.biblioteca.domain.repository.UserRepository;
 import com.biblioteca.dto.request.UserRequestDTO;
 import com.biblioteca.dto.request.UserUpdateDTO;
-import com.biblioteca.dto.response.BookResponseDTO;
+
+import com.biblioteca.dto.response.LoansResponseDTO;
 import com.biblioteca.dto.response.UserResponseDTO;
 import com.biblioteca.dto.response.UserTokenResponseDTO;
 import com.biblioteca.exception.ResourceNotFoundException;
-import com.biblioteca.mapper.MapperBook;
+
+import com.biblioteca.mapper.MapperLoan;
 import com.biblioteca.mapper.MapperUser;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +24,7 @@ import java.util.List;
 public class UserService {
     private final UserRepository repository;
     private final MapperUser mapperUser = new MapperUser();
-    private final MapperBook mapperBook = new MapperBook();
+    private final MapperLoan mapperLoan = new MapperLoan();
 
 
     public UserService(UserRepository userRepository) {
@@ -59,11 +61,8 @@ public class UserService {
         return this.mapperUser.userToDto(this.repository.save(user));
     }
 
-public List<BookResponseDTO> getLoanUser(Long id){
-        return this.repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuario nao encontrado")).getLoans().stream().map(
-                l->
-                        this.mapperBook.bookToResponse(l.getBook())
-        ).toList();
-}
+    public List<LoansResponseDTO> historicalLoans(Long id){
+        return mapperLoan.listLoanResponse(this.repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("user nao encontrado")).getHistorical());
+    }
 
 }

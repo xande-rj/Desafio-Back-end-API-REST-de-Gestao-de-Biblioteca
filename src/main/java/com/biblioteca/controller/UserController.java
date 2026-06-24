@@ -3,12 +3,15 @@ package com.biblioteca.controller;
 import com.biblioteca.domain.service.UserService;
 import com.biblioteca.dto.request.UserRequestDTO;
 import com.biblioteca.dto.request.UserUpdateDTO;
+import com.biblioteca.dto.response.LoansResponseDTO;
 import com.biblioteca.dto.response.UserResponseDTO;
 import com.biblioteca.dto.response.UserTokenResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -33,8 +36,8 @@ public class UserController {
         return new ResponseEntity<>(this.service.updateUser(id,userUpdateDTO),HttpStatus.OK);
     }
     @GetMapping("/{id}/loans")
-    public ResponseEntity<?> getLoan(@PathVariable Long id){
-        return ResponseEntity.status(200).body(this.service.getLoanUser(id));
+    public ResponseEntity<List<LoansResponseDTO>> getLoan(@PathVariable Long id){
+        return ResponseEntity.status(200).body(this.service.historicalLoans(id));
 
     }
 }

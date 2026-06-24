@@ -87,14 +87,17 @@ public class LoanService {
         bookModel.get().setStatus(Status.AVAILABLE);
         bookModel.get().setUpdated_at(LocalDateTime.now());
 
-        Optional<UserModel> userModel = this.userRepository.findById(loan.getUser().getId());
+        if(loan.getUser()==null){
+            throw new ResourceNotFoundException("user nao encontrado");
+        }
+        UserModel userModel = this.userRepository.findById(loan.getUser().getId()).orElseThrow(() -> new ResourceNotFoundException("user nao encontrado"));
 
 
 
         loan.setUser(null);
-        loan.setHistorical_user(userModel.get());
-        userModel.get().getHistorical().add(loan);
-        this.userRepository.save(userModel.get());
+        loan.setHistorical_user(userModel);
+        userModel.getHistorical().add(loan);
+        this.userRepository.save(userModel);
         this.bookRepository.save(bookModel.get());
          this.loanRepository.save(loan);
 
