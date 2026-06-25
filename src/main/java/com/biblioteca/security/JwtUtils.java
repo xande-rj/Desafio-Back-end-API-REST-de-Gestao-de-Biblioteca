@@ -13,13 +13,21 @@ public class JwtUtils {
     private final String SECRET_KEY="my-super-secure-secret-key-for-jwt-signing-12345";
     private static final long PERIOD = 15*60*1000;
 
-    public String generateToken (String idUser, Roles roles){
+    public String generateToken ( Roles roles){
         return Jwts.builder()
-                .setSubject(idUser)
                 .setSubject(roles.toString())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis()+PERIOD))
                 .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()), SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    public String extractUsername(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY.getBytes())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 }

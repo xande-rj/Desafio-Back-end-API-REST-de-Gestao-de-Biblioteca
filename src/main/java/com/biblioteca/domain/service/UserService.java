@@ -54,7 +54,7 @@ private PasswordEncoder passwordEncoder;
         user.setRemoved(false);
         user.setRole(Roles.READER);
         UserModel newUser = this.repository.save(user);
-        return new UserTokenResponseDTO(jwtUtils.generateToken(newUser.getEmail(),newUser.getRole()));
+        return new UserTokenResponseDTO(jwtUtils.generateToken(newUser.getRole()));
     }
 
     public UserResponseDTO getUseById(Long id) {

@@ -1,5 +1,7 @@
 package com.biblioteca.config;
 
+import com.biblioteca.security.JwtFilter;
+import com.biblioteca.security.JwtUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -9,11 +11,17 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private  final JwtFilter jwtFilter;
+
+    public SecurityConfig(JwtFilter jwtFilter){
+        this.jwtFilter = jwtFilter;
+    }
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         return http.csrf(AbstractHttpConfigurer::disable).
@@ -22,8 +30,11 @@ public class SecurityConfig {
                                         .requestMatchers(HttpMethod.POST,"/api/auth/login","/api/users","/api/loans").permitAll()
                                         .requestMatchers(HttpMethod.PUT,"/api/users/{id}").permitAll()
                                         .requestMatchers(HttpMethod.PATCH,"/api/loans/{id}/return").permitAll()
+                                        .anyRequest().authenticated()
 
-                                ).build();
+                                )
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
 
     }
 
