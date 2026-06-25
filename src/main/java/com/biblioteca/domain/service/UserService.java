@@ -14,6 +14,9 @@ import com.biblioteca.exception.ResourceNotFoundException;
 
 import com.biblioteca.mapper.MapperLoan;
 import com.biblioteca.mapper.MapperUser;
+import com.biblioteca.security.JwtUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -26,6 +29,11 @@ public class UserService {
     private final MapperUser mapperUser = new MapperUser();
     private final MapperLoan mapperLoan = new MapperLoan();
 
+    @Autowired
+private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtils jwtUtils;
 
     public UserService(UserRepository userRepository) {
         this.repository = userRepository;
@@ -38,14 +46,15 @@ public class UserService {
         UserModel user = new UserModel();
         user.setName(data.getName());
         user.setEmail(data.getEmail());
-        user.setPassword(data.getPassword());
+
+        user.setPassword(passwordEncoder.encode(data.getPassword()));
         user.setDate_of_birth(data.getDate_of_birth());
         user.setCreated_at(LocalDateTime.now());
         user.setUpdated_at(LocalDateTime.now());
         user.setRemoved(false);
         user.setRole(Roles.READER);
-        this.repository.save(user);
-        return new UserTokenResponseDTO();
+        UserModel newUser = this.repository.save(user);
+        return new UserTokenResponseDTO(jwtUtils.generateToken(newUser.getEmail(),newUser.getRole()));
     }
 
     public UserResponseDTO getUseById(Long id) {

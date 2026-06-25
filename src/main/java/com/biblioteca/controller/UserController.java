@@ -14,28 +14,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 public class UserController {
     private final UserService service;
     public UserController(UserService userService){
         this.service = userService;
     }
 
-    @PostMapping
+    @PostMapping("/users")
     public ResponseEntity<UserTokenResponseDTO> saveUser(@RequestBody UserRequestDTO data){
         return new ResponseEntity<>(this.service.saveUser(data), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<UserResponseDTO> getById(@PathVariable Long id){
         return new ResponseEntity<>(this.service.getUseById(id),HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/users/{id}")
     public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id, @RequestBody @Valid UserUpdateDTO userUpdateDTO){
         return new ResponseEntity<>(this.service.updateUser(id,userUpdateDTO),HttpStatus.OK);
     }
-    @GetMapping("/{id}/loans")
+    @GetMapping("/users/{id}/loans")
     public ResponseEntity<List<LoansResponseDTO>> getLoan(@PathVariable Long id){
         return ResponseEntity.status(200).body(this.service.historicalLoans(id));
 
