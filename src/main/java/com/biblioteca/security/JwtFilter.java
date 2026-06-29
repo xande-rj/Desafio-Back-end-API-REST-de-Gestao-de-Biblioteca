@@ -5,6 +5,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -16,9 +18,10 @@ import java.util.List;
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtils jwtUtils;
 
-    public JwtFilter(JwtUtils jwtUtils){
+    public JwtFilter(JwtUtils jwtUtils) {
         this.jwtUtils = jwtUtils;
     }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -26,10 +29,13 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
-            String username = jwtUtils.extractUsername(token);
-System.out.println(username);
+            String username = jwtUtils.extractRole(token);
+            System.out.println(username);
+            List<GrantedAuthority> authorities = List.of(
+                    new SimpleGrantedAuthority("ROLE_" + username)
+            );
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                    username, null, List.of());
+                    username, null, authorities);
 
             SecurityContextHolder.getContext().setAuthentication(auth);
         }

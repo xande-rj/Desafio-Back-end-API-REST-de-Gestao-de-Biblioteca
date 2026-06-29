@@ -1,6 +1,7 @@
 package com.biblioteca.controller;
 
 import com.biblioteca.domain.service.UserService;
+import com.biblioteca.dto.request.UserAuthRequestDTO;
 import com.biblioteca.dto.request.UserRequestDTO;
 import com.biblioteca.dto.request.UserUpdateDTO;
 import com.biblioteca.dto.response.LoansResponseDTO;
@@ -21,6 +22,10 @@ public class UserController {
         this.service = userService;
     }
 
+    @PostMapping("/auth/login")
+    public ResponseEntity<UserTokenResponseDTO> authUser(@RequestBody UserAuthRequestDTO data){
+        return new ResponseEntity<>(this.service.authUser(data), HttpStatus.OK);
+    }
     @PostMapping("/users")
     public ResponseEntity<UserTokenResponseDTO> saveUser(@RequestBody UserRequestDTO data){
         return new ResponseEntity<>(this.service.saveUser(data), HttpStatus.CREATED);

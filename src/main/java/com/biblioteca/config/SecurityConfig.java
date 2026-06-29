@@ -30,6 +30,7 @@ public class SecurityConfig {
                                         .requestMatchers(HttpMethod.POST,"/api/auth/login","/api/users","/api/loans").permitAll()
                                         .requestMatchers(HttpMethod.PUT,"/api/users/{id}").permitAll()
                                         .requestMatchers(HttpMethod.PATCH,"/api/loans/{id}/return").permitAll()
+                                        .requestMatchers(HttpMethod.GET,"/api/loans/overdue").hasRole("ADMIN")
                                         .anyRequest().authenticated()
 
                                 )

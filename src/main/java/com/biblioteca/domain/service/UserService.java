@@ -4,6 +4,7 @@ import com.biblioteca.domain.enuns.Roles;
 import com.biblioteca.domain.model.LoanModel;
 import com.biblioteca.domain.model.UserModel;
 import com.biblioteca.domain.repository.UserRepository;
+import com.biblioteca.dto.request.UserAuthRequestDTO;
 import com.biblioteca.dto.request.UserRequestDTO;
 import com.biblioteca.dto.request.UserUpdateDTO;
 
@@ -52,11 +53,20 @@ private PasswordEncoder passwordEncoder;
         user.setCreated_at(LocalDateTime.now());
         user.setUpdated_at(LocalDateTime.now());
         user.setRemoved(false);
-        user.setRole(Roles.READER);
+        user.setRole(Roles.ADMIN);
         UserModel newUser = this.repository.save(user);
         return new UserTokenResponseDTO(jwtUtils.generateToken(newUser.getRole()));
     }
+public UserTokenResponseDTO authUser(UserAuthRequestDTO data){
+    UserModel user = this.repository.findByEmail(data.getEmail()).orElseThrow(() ->  new ResourceNotFoundException("Usuario nao encontrado"));
 
+    if(!passwordEncoder.matches(data.getPassword(), user.getPassword())){
+        throw new ResourceNotFoundException("senha errada");
+    }
+
+    return new UserTokenResponseDTO(jwtUtils.generateToken(user.getRole()));
+
+}
     public UserResponseDTO getUseById(Long id) {
         UserModel user = this.repository.findById(id).orElseThrow(() ->  new ResourceNotFoundException("Usuario nao encontrado"));
         return this.mapperUser.userToDto(user);
