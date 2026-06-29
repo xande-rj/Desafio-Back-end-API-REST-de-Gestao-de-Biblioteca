@@ -15,4 +15,5 @@ public class UserRequestDTO {
     private String email;
     @NotNull(message = "The user needs a date of birth.")
     private LocalDate date_of_birth;
+    private String roles;
 }

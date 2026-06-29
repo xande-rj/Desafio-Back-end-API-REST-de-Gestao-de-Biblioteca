@@ -53,7 +53,13 @@ private PasswordEncoder passwordEncoder;
         user.setCreated_at(LocalDateTime.now());
         user.setUpdated_at(LocalDateTime.now());
         user.setRemoved(false);
-        user.setRole(Roles.ADMIN);
+        if(data.getRoles()!=null) {
+            user.setRole(Roles.valueOf(data.getRoles().toUpperCase()));
+        }else {
+            user.setRole(Roles.READER);
+
+        }
+
         UserModel newUser = this.repository.save(user);
         return new UserTokenResponseDTO(jwtUtils.generateToken(newUser.getRole()));
     }
