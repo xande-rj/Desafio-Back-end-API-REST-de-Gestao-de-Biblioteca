@@ -51,7 +51,7 @@ public class LoanService {
             if (periodo >= 14)
                 throw new PenaltyLoanException("Multa por atraso em espera ", mapperLoan.loansResponseDTO(l));
         }
-        if (book.getStatus() == Status.UNAVAILABLE || book.isRemoved()) {
+        if (book.getStatusBook() == Status.UNAVAILABLE || book.isRemovedBook()) {
             throw new UnavailableBooksException("livro nao esta disponivel para emprestimo");
         }
 
@@ -62,8 +62,8 @@ public class LoanService {
         loanModel.setUser(user);
         LoanModel newLoan = this.loanRepository.save(loanModel);
         user.getLoans().add(newLoan);
-        book.setStatus(Status.UNAVAILABLE);
-        book.setUpdated_at(LocalDateTime.now());
+        book.setStatusBook(Status.UNAVAILABLE);
+        book.setUpdatedAt(LocalDateTime.now());
 
         this.bookRepository.save((book));
 
@@ -84,8 +84,8 @@ public class LoanService {
                 loan.setPay_day(LocalDateTime.now());
 
         Optional<BookModel> bookModel = this.bookRepository.findById(loan.getBook().getId());
-        bookModel.get().setStatus(Status.AVAILABLE);
-        bookModel.get().setUpdated_at(LocalDateTime.now());
+        bookModel.get().setStatusBook(Status.AVAILABLE);
+        bookModel.get().setUpdatedAt(LocalDateTime.now());
 
         if(loan.getUser()==null){
             throw new ResourceNotFoundException("user nao encontrado");

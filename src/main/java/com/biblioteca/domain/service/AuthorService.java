@@ -28,7 +28,7 @@ public class AuthorService {
         }
         author.setName(data.getName());
         author.setDetails(data.getDetails());
-        author.setCreated_at(LocalDateTime.now());
+        author.setCreatedAt(LocalDateTime.now());
 
         return this.mapper.authorToResponse(repository.save(author));
     };

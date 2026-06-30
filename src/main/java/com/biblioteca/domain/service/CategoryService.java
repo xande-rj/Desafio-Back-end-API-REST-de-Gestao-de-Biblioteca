@@ -24,11 +24,11 @@ public class CategoryService {
 
     public CategoryResponseDTO createdCategory(CategoryRequestDTO data){
         CategoryModel category = new CategoryModel();
-        if(repository.existsByTitleIgnoreCase(data.getTitle())){
+        if(repository.existsByTitleCategoryIgnoreCase(data.getTitle())){
             throw  new ResourceNotFoundException("A category with that title already exists.");
         }
-        category.setTitle(data.getTitle());
-        category.setCreated_at(LocalDateTime.now());
+        category.setTitleCategory(data.getTitle());
+        category.setCreatedAt(LocalDateTime.now());
         return this.mapper.categoryToResponse(repository.save(category));
     };
 

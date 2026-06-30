@@ -12,34 +12,76 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "TB_books")
+@Table(name = "tb_books")
 @Getter
 @Setter
 @NoArgsConstructor
 public class BookModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(
+            name = "id",
+            nullable = false,
+            unique = true
+    )
     private Long id;
-    private String title;
-    private String details;
-    private Long pages;
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+
+    @Column(
+            name = "title",
+            nullable = false,
+            unique = true
+    )
+    private String titleBook;
+
+    @Column(
+            name = "details",
+            nullable = false
+    )
+    private String detailsBook;
+
+    @Column(
+            name = "pages",
+            nullable = false
+    )
+    private Long pagesBook;
+
+    @Column(
+            name = "created_at",
+            nullable = false
+    )
+    private LocalDateTime createdAt;
+
+    @Column(
+            name = "updated_at",
+            nullable = false
+    )
+    private LocalDateTime updatedAt;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
-    private boolean removed;
+    @Column(
+            name = "status",
+            nullable = false
+    )
+    private Status statusBook;
 
+    @Column(
+            name = "removed",
+            nullable = false
+    )
+    private boolean removedBook;
 
     @ManyToOne
-    @JoinColumn(name = "author_id",nullable = false)
+    @JoinColumn(
+            name = "author_id",
+            nullable = false
+    )
     private AuthorModel author;
 
     @ManyToOne
-    @JoinColumn(name = "category_id",nullable = false)
+    @JoinColumn(
+            name = "category_id",
+            nullable = false
+    )
     private CategoryModel category;
 
-    @OneToMany(mappedBy = "book")
-    @JsonManagedReference
-    private List<LoanModel> loans = new ArrayList<>();
 }
