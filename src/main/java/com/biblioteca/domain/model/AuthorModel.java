@@ -9,16 +9,32 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "TB_author")
+@Table(name = "tb_author")
 @Getter
 @Setter
 @NoArgsConstructor
 public class AuthorModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(
+    name = "id",
+    nullable = false,
+    unique = true
+    )
     private UUID id;
+
+    @Column(name = "name",
+    nullable = false
+    )
     private String name;
+
+    @Column(name = "details_author",
+            nullable = false)
     private String details;
-    private LocalDateTime created_at;
+
+    @Column(name = "created_at",
+    nullable = false
+    )
+    private LocalDateTime createdAt;
 
 }
