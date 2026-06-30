@@ -35,6 +35,9 @@ public class SecurityConfig {
                                         .requestMatchers(HttpMethod.PUT,"/api/users/{id}").permitAll()
                                         .requestMatchers(HttpMethod.PATCH,"/api/loans/{id}/return").permitAll()
                                         .requestMatchers(HttpMethod.GET,"/api/loans/overdue").hasRole("ADMIN")
+                                        .requestMatchers(HttpMethod.GET,"/api/loans/overdue").hasRole("ATTENDANT")
+                                        .requestMatchers(HttpMethod.POST,"/api/categories","/api/authors","/api/books").hasRole("ADMIN")
+                                        .requestMatchers(HttpMethod.DELETE,"/api/books/{id}").hasRole("ADMIN")
                                         .anyRequest().authenticated()
 
                                 )

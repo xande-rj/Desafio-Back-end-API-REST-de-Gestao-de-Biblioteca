@@ -30,7 +30,6 @@ public class JwtFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
             String username = jwtUtils.extractRole(token);
-            System.out.println(username);
             List<GrantedAuthority> authorities = List.of(
                     new SimpleGrantedAuthority("ROLE_" + username)
             );
