@@ -47,7 +47,7 @@ public class LoanService {
             throw new LimitBooksException("user nao pode ter mais de 3 livros");
         }
         for (LoanModel l : user.getLoans()) {
-            long periodo = ChronoUnit.DAYS.between(l.getCreate_at(), LocalDateTime.now());
+            long periodo = ChronoUnit.DAYS.between(l.getCreateAt(), LocalDateTime.now());
             if (periodo >= 14)
                 throw new PenaltyLoanException("Multa por atraso em espera ", mapperLoan.loansResponseDTO(l));
         }
@@ -57,8 +57,8 @@ public class LoanService {
 
         LoanModel loanModel = new LoanModel();
         loanModel.setBook(book);
-        loanModel.setCreate_at(LocalDateTime.now().minusDays(20));
-        loanModel.setUpdate_at(LocalDateTime.now());
+        loanModel.setCreateAt(LocalDateTime.now().minusDays(20));
+        loanModel.setUpdateAt(LocalDateTime.now());
         loanModel.setUser(user);
         LoanModel newLoan = this.loanRepository.save(loanModel);
         user.getLoans().add(newLoan);
@@ -74,14 +74,14 @@ public class LoanService {
 
         LoanModel loan = this.loanRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("emprestimo nao encontrado"));
 
-        Long periodo = ChronoUnit.DAYS.between(loan.getCreate_at(), LocalDateTime.now());
+        Long periodo = ChronoUnit.DAYS.between(loan.getCreateAt(), LocalDateTime.now());
         Float multa=0F;
         if (periodo >= 14) {
             Long i = periodo - 14;
             multa+= i * 0.5F;
         }
-        loan.setUpdate_at(LocalDateTime.now());
-                loan.setPay_day(LocalDateTime.now());
+        loan.setUpdateAt(LocalDateTime.now());
+                loan.setPayDay( LocalDateTime.now());
 
         Optional<BookModel> bookModel = this.bookRepository.findById(loan.getBook().getId());
         bookModel.get().setStatusBook(Status.AVAILABLE);
@@ -110,7 +110,7 @@ public class LoanService {
 
         for(UserModel u :users){
             for(LoanModel l : u.getLoans()){
-                Long periodo = ChronoUnit.DAYS.between(l.getCreate_at(), LocalDateTime.now());
+                Long periodo = ChronoUnit.DAYS.between(l.getCreateAt(), LocalDateTime.now());
 
                 if(periodo>=14) {
                     loans.add(l);
