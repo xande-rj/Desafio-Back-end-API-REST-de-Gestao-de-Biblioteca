@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -38,7 +39,9 @@ public class SecurityConfig {
 
                                 )
                 .exceptionHandling(exception ->
-                        exception.authenticationEntryPoint(authenticationEntryPoint()))
+                        exception.authenticationEntryPoint(authenticationEntryPoint()).accessDeniedHandler(accessDeniedHandler())
+
+                )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
 
@@ -53,6 +56,20 @@ public class SecurityConfig {
                     {
                     "status":401,
                     "message":"Você precisa estar autenticado."
+                    }
+                    """);
+        };
+    }
+    @Bean
+    AccessDeniedHandler accessDeniedHandler(){
+        return (request, response, authException) -> {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setContentType("application/json");
+
+            response.getWriter().write("""
+                    {
+                    "status":403,
+                    "message":"Você não possui permissão para acessar este recurso."
                     }
                     """);
         };
