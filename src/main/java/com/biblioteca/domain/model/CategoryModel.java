@@ -9,14 +9,28 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "TB_category")
+@Table(name = "tb_category")
 @Getter
 @Setter
 @NoArgsConstructor
 public class CategoryModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(
+            name = "id",
+            nullable = false
+    )
     private UUID id;
-    private String title;
-    private LocalDateTime created_at;
+
+    @Column(
+            name = "title",
+            nullable = false
+    )
+    private String titleCategory;
+
+    @Column(
+            name = "created_at",
+            nullable = false
+    )
+    private LocalDateTime createdAt;
 }
