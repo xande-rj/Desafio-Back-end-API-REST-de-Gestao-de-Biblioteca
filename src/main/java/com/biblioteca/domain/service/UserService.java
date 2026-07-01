@@ -41,36 +41,36 @@ private PasswordEncoder passwordEncoder;
     }
 
     public UserTokenResponseDTO saveUser(UserRequestDTO data) {
-        if (this.repository.findByEmail(data.getEmail()).isPresent()) {
+        if (this.repository.findByEmailUser(data.getEmail()).isPresent()) {
             throw new ResourceNotFoundException("email ja cadastrado");
         }
         UserModel user = new UserModel();
-        user.setName(data.getName());
-        user.setEmail(data.getEmail());
+        user.setNameUser(data.getName());
+        user.setEmailUser(data.getEmail());
 
-        user.setPassword(passwordEncoder.encode(data.getPassword()));
-        user.setDate_of_birth(data.getDate_of_birth());
-        user.setCreated_at(LocalDateTime.now());
-        user.setUpdated_at(LocalDateTime.now());
-        user.setRemoved(false);
+        user.setPasswordUser(passwordEncoder.encode(data.getPassword()));
+        user.setDateOfBirth(data.getDate_of_birth());
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
+        user.setRemovedUser(false);
         if(data.getRoles()!=null) {
-            user.setRole(Roles.valueOf(data.getRoles().toUpperCase()));
+            user.setRoleUser(Roles.valueOf(data.getRoles().toUpperCase()));
         }else {
-            user.setRole(Roles.READER);
+            user.setRoleUser(Roles.READER);
 
         }
 
         UserModel newUser = this.repository.save(user);
-        return new UserTokenResponseDTO(jwtUtils.generateToken(newUser.getRole()));
+        return new UserTokenResponseDTO(jwtUtils.generateToken(newUser.getRoleUser()));
     }
 public UserTokenResponseDTO authUser(UserAuthRequestDTO data){
-    UserModel user = this.repository.findByEmail(data.getEmail()).orElseThrow(() ->  new ResourceNotFoundException("Usuario nao encontrado"));
+    UserModel user = this.repository.findByEmailUser(data.getEmail()).orElseThrow(() ->  new ResourceNotFoundException("Usuario nao encontrado"));
 
-    if(!passwordEncoder.matches(data.getPassword(), user.getPassword())){
+    if(!passwordEncoder.matches(data.getPassword(), user.getPasswordUser())){
         throw new ResourceNotFoundException("senha errada");
     }
 
-    return new UserTokenResponseDTO(jwtUtils.generateToken(user.getRole()));
+    return new UserTokenResponseDTO(jwtUtils.generateToken(user.getRoleUser()));
 
 }
     public UserResponseDTO getUseById(Long id) {
@@ -80,8 +80,8 @@ public UserTokenResponseDTO authUser(UserAuthRequestDTO data){
 
     public UserResponseDTO updateUser(Long id, UserUpdateDTO userUpdateDTO) {
         UserModel user = this.repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuario nao encontrado"));
-        user.setName(userUpdateDTO.getName());
-        user.setEmail(userUpdateDTO.getEmail());
+        user.setNameUser(userUpdateDTO.getName());
+        user.setEmailUser(userUpdateDTO.getEmail());
 
         return this.mapperUser.userToDto(this.repository.save(user));
     }

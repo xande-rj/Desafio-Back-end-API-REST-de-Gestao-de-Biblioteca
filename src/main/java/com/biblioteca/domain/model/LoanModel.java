@@ -61,8 +61,7 @@ public class LoanModel {
     @ManyToOne
     @JoinColumn(
             name = "book_id",
-            nullable = false,
-            unique = true
+            nullable = false
     )
     private BookModel book;
 }
