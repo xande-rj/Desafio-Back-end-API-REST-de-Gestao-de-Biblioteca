@@ -29,7 +29,7 @@ public class LoanService {
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
     private final LoanRepository loanRepository;
-    private MapperLoan mapperLoan = new MapperLoan();
+    private final MapperLoan mapperLoan = new MapperLoan();
 
     public LoanService(UserRepository userRepository, BookRepository bookRepository, LoanRepository loanRepository) {
         this.userRepository = userRepository;
@@ -39,25 +39,26 @@ public class LoanService {
 
     public LoansResponseDTO addLoan(LoanResquestDTO dto) {
         UserModel user = this.userRepository.findById(dto.getIdUser()).orElseThrow(()
-                -> new ResourceNotFoundException("user nao encontrado"));
+                -> new ResourceNotFoundException("User not found."));
 
-        BookModel book = this.bookRepository.findById(dto.getIdBook()).orElseThrow(() -> new ResourceNotFoundException("livro nao encontrado"));
+        BookModel book = this.bookRepository.findById(dto.getIdBook()).orElseThrow(()
+                -> new ResourceNotFoundException("Book not found."));
 
         if (user.getLoans().size() >= 3) {
-            throw new LimitBooksException("user nao pode ter mais de 3 livros");
+            throw new LimitBooksException("A user cannot have more than 3 books.");
         }
         for (LoanModel l : user.getLoans()) {
             long periodo = ChronoUnit.DAYS.between(l.getCreateAt(), LocalDateTime.now());
             if (periodo >= 14)
-                throw new PenaltyLoanException("Multa por atraso em espera ", mapperLoan.loansResponseDTO(l));
+                throw new PenaltyLoanException("Late fee for waiting time :", mapperLoan.loansResponseDTO(l));
         }
         if (book.getStatusBook() == Status.UNAVAILABLE || book.isRemovedBook()) {
-            throw new UnavailableBooksException("livro nao esta disponivel para emprestimo");
+            throw new UnavailableBooksException("The book is not available for loan.");
         }
 
         LoanModel loanModel = new LoanModel();
         loanModel.setBook(book);
-        loanModel.setCreateAt(LocalDateTime.now().minusDays(20));
+        loanModel.setCreateAt(LocalDateTime.now());
         loanModel.setUpdateAt(LocalDateTime.now());
         loanModel.setUser(user);
         LoanModel newLoan = this.loanRepository.save(loanModel);
@@ -72,12 +73,13 @@ public class LoanService {
 
     public LoanReturnResponseDTO loanReturn(Long id) {
 
-        LoanModel loan = this.loanRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("emprestimo nao encontrado"));
+        LoanModel loan = this.loanRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Loan not found."));
 
-        Long periodo = ChronoUnit.DAYS.between(loan.getCreateAt(), LocalDateTime.now());
-        Float multa=0F;
+        long periodo = ChronoUnit.DAYS.between(loan.getCreateAt(), LocalDateTime.now());
+        float multa=0F;
         if (periodo >= 14) {
-            Long i = periodo - 14;
+            long i = periodo - 14;
             multa+= i * 0.5F;
         }
         loan.setUpdateAt(LocalDateTime.now());
@@ -88,12 +90,11 @@ public class LoanService {
         bookModel.get().setUpdatedAt(LocalDateTime.now());
 
         if(loan.getUser()==null){
-            throw new ResourceNotFoundException("user nao encontrado");
+            throw new ResourceNotFoundException("User not found.");
         }
-        UserModel userModel = this.userRepository.findById(loan.getUser().getId()).orElseThrow(() -> new ResourceNotFoundException("user nao encontrado"));
-
-
-
+        UserModel userModel = this.userRepository.findById(loan.getUser().getId()).orElseThrow(()
+                -> new ResourceNotFoundException("User not found."));
+        
         loan.setUser(null);
         loan.setHistorical_user(userModel);
         userModel.getHistorical().add(loan);
@@ -104,14 +105,13 @@ public class LoanService {
         return new LoanReturnResponseDTO(multa);
     }
 
-    public List<LoansResponseDTO>overdueLoans(){
+    public List<LoansResponseDTO>overdueLoan(){
         List<LoanModel> loans = new ArrayList<>();
         List<UserModel> users = this.userRepository.findAll();
 
         for(UserModel u :users){
             for(LoanModel l : u.getLoans()){
-                Long periodo = ChronoUnit.DAYS.between(l.getCreateAt(), LocalDateTime.now());
-
+                long periodo = ChronoUnit.DAYS.between(l.getCreateAt(), LocalDateTime.now());
                 if(periodo>=14) {
                     loans.add(l);
                 }

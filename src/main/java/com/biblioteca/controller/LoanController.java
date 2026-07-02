@@ -30,6 +30,6 @@ public class LoanController {
     }
     @GetMapping("/overdue")
     public ResponseEntity<List<LoansResponseDTO>> overdueLoans(){
-        return new ResponseEntity<>(this.loanService.overdueLoans(), HttpStatus.OK);
+        return new ResponseEntity<>(this.loanService.overdueLoan(), HttpStatus.OK);
     }
 }
