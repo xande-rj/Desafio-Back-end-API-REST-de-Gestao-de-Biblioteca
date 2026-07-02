@@ -33,7 +33,7 @@ public class CategoryService {
     };
 
 
-    public List<CategoryResponseDTO> getAllCategorys(){
+    public List<CategoryResponseDTO> getAllCategory(){
         return this.mapper.categorysToResponse( this.repository.findAll());
     };
 }

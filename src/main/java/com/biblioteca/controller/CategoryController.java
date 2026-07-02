@@ -30,6 +30,6 @@ public class CategoryController {
     @GetMapping
     public ResponseEntity<List<CategoryResponseDTO>> getAllCategory(){
 
-        return new ResponseEntity<List<CategoryResponseDTO>>(this.service.getAllCategorys(), HttpStatus.OK);
+        return new ResponseEntity<List<CategoryResponseDTO>>(this.service.getAllCategory(), HttpStatus.OK);
     }
 }
