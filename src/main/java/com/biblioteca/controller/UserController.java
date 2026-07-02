@@ -7,6 +7,7 @@ import com.biblioteca.dto.request.UserUpdateDTO;
 import com.biblioteca.dto.response.LoansResponseDTO;
 import com.biblioteca.dto.response.UserResponseDTO;
 import com.biblioteca.dto.response.UserTokenResponseDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@Tag(
+        name = "Users",
+        description = "User-related operations"
+)
 public class UserController {
     private final UserService service;
     public UserController(UserService userService){

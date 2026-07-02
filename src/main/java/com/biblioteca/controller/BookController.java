@@ -6,6 +6,7 @@ import com.biblioteca.dto.request.BookRequestDTO;
 import com.biblioteca.dto.request.BookUpdateDTO;
 import com.biblioteca.dto.response.BookResponseDTO;
 import com.biblioteca.mapper.MapperBook;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/books")
+@Tag(
+        name = "Books",
+        description = "Book-related operations"
+)
 public class BookController {
     private final BookService service;
 

@@ -5,6 +5,7 @@ import com.biblioteca.dto.request.LoanResquestDTO;
 import com.biblioteca.dto.response.LoanReturnResponseDTO;
 import com.biblioteca.dto.response.LoansResponseDTO;
 import com.biblioteca.dto.response.PenaltyResponseDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/loans")
+@Tag(
+        name = "Loan",
+        description = "Loan-related operations"
+)
 public class LoanController {
     private final LoanService loanService;
     public LoanController(LoanService loanService){

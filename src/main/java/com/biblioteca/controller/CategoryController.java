@@ -5,6 +5,7 @@ import com.biblioteca.domain.service.CategoryService;
 import com.biblioteca.dto.request.CategoryRequestDTO;
 import com.biblioteca.dto.response.CategoryResponseDTO;
 import com.biblioteca.mapper.MapperCategory;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
+@Tag(
+        name = "Categories",
+        description = "Category-related operations"
+)
 public class CategoryController {
     private final CategoryService service;
 
