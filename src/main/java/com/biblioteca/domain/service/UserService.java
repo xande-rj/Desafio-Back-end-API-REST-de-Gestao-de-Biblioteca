@@ -31,7 +31,7 @@ public class UserService {
     private final MapperLoan mapperLoan = new MapperLoan();
 
     @Autowired
-private PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private JwtUtils jwtUtils;
@@ -42,7 +42,7 @@ private PasswordEncoder passwordEncoder;
 
     public UserTokenResponseDTO saveUser(UserRequestDTO data) {
         if (this.repository.findByEmailUser(data.getEmail()).isPresent()) {
-            throw new ResourceNotFoundException("email ja cadastrado");
+            throw new ResourceNotFoundException("Email ja cadastrado tente outro.");
         }
         UserModel user = new UserModel();
         user.setNameUser(data.getName());
@@ -53,9 +53,9 @@ private PasswordEncoder passwordEncoder;
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
         user.setRemovedUser(false);
-        if(data.getRoles()!=null) {
+        if (data.getRoles() != null) {
             user.setRoleUser(Roles.valueOf(data.getRoles().toUpperCase()));
-        }else {
+        } else {
             user.setRoleUser(Roles.READER);
 
         }
@@ -63,31 +63,37 @@ private PasswordEncoder passwordEncoder;
         UserModel newUser = this.repository.save(user);
         return new UserTokenResponseDTO(jwtUtils.generateToken(newUser.getRoleUser()));
     }
-public UserTokenResponseDTO authUser(UserAuthRequestDTO data){
-    UserModel user = this.repository.findByEmailUser(data.getEmail()).orElseThrow(() ->  new ResourceNotFoundException("Usuario nao encontrado"));
 
-    if(!passwordEncoder.matches(data.getPassword(), user.getPasswordUser())){
-        throw new ResourceNotFoundException("senha errada");
+    public UserTokenResponseDTO authUser(UserAuthRequestDTO data) {
+        UserModel user = this.repository.findByEmailUser(data.getEmail()).orElseThrow(()
+                -> new ResourceNotFoundException("Usuario nao encontrado."));
+
+        if (!passwordEncoder.matches(data.getPassword(), user.getPasswordUser())) {
+            throw new ResourceNotFoundException("Senha errada.");
+        }
+
+        return new UserTokenResponseDTO(jwtUtils.generateToken(user.getRoleUser()));
+
     }
 
-    return new UserTokenResponseDTO(jwtUtils.generateToken(user.getRoleUser()));
-
-}
     public UserResponseDTO getUseById(Long id) {
-        UserModel user = this.repository.findById(id).orElseThrow(() ->  new ResourceNotFoundException("Usuario nao encontrado"));
+        UserModel user = this.repository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Usuario nao encontrado."));
         return this.mapperUser.userToDto(user);
     }
 
     public UserResponseDTO updateUser(Long id, UserUpdateDTO userUpdateDTO) {
-        UserModel user = this.repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuario nao encontrado"));
+        UserModel user = this.repository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Usuario nao encontrado"));
         user.setNameUser(userUpdateDTO.getName());
         user.setEmailUser(userUpdateDTO.getEmail());
-
+user.setUpdatedAt(LocalDateTime.now());
         return this.mapperUser.userToDto(this.repository.save(user));
     }
 
-    public List<LoansResponseDTO> historicalLoans(Long id){
-        return mapperLoan.listLoanResponse(this.repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("user nao encontrado")).getHistorical());
+    public List<LoansResponseDTO> historicalLoans(Long id) {
+        return mapperLoan.listLoanResponse(this.repository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Usuario nao encontrado")).getHistorical());
     }
 
 }
