@@ -42,7 +42,7 @@ public class UserService {
 
     public UserTokenResponseDTO saveUser(UserRequestDTO data) {
         if (this.repository.findByEmailUser(data.getEmail()).isPresent()) {
-            throw new ResourceNotFoundException("Email ja cadastrado tente outro.");
+            throw new ResourceNotFoundException("Email already registered; please try another one.");
         }
         UserModel user = new UserModel();
         user.setNameUser(data.getName());
@@ -66,10 +66,10 @@ public class UserService {
 
     public UserTokenResponseDTO authUser(UserAuthRequestDTO data) {
         UserModel user = this.repository.findByEmailUser(data.getEmail()).orElseThrow(()
-                -> new ResourceNotFoundException("Usuario nao encontrado."));
+                -> new ResourceNotFoundException("User not found."));
 
         if (!passwordEncoder.matches(data.getPassword(), user.getPasswordUser())) {
-            throw new ResourceNotFoundException("Senha errada.");
+            throw new ResourceNotFoundException("Incorrect password.");
         }
 
         return new UserTokenResponseDTO(jwtUtils.generateToken(user.getRoleUser()));
@@ -78,13 +78,13 @@ public class UserService {
 
     public UserResponseDTO getUseById(Long id) {
         UserModel user = this.repository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Usuario nao encontrado."));
+                new ResourceNotFoundException("User not found."));
         return this.mapperUser.userToDto(user);
     }
 
     public UserResponseDTO updateUser(Long id, UserUpdateDTO userUpdateDTO) {
         UserModel user = this.repository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Usuario nao encontrado"));
+                new ResourceNotFoundException("User not found."));
         user.setNameUser(userUpdateDTO.getName());
         user.setEmailUser(userUpdateDTO.getEmail());
 user.setUpdatedAt(LocalDateTime.now());
@@ -93,7 +93,7 @@ user.setUpdatedAt(LocalDateTime.now());
 
     public List<LoansResponseDTO> historicalLoans(Long id) {
         return mapperLoan.listLoanResponse(this.repository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Usuario nao encontrado")).getHistorical());
+                new ResourceNotFoundException("User not found.")).getHistorical());
     }
 
 }
