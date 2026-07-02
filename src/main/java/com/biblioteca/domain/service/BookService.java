@@ -53,8 +53,10 @@ public class BookService {
         book.setUpdatedAt(LocalDateTime.now());
         book.setStatusBook(Status.AVAILABLE);
         book.setRemovedBook(false);
-        book.setAuthor(authorRepository.findByNameIgnoreCase(data.getAuthor()).orElseThrow(() -> new ResourceNotFoundException("Author dont exists")));
-        book.setCategory(categoryRepository.findByTitleCategoryIgnoreCase(data.getCategory()).orElseThrow(() -> new ResourceNotFoundException("Category dont exist")));
+        book.setAuthor(authorRepository.findByNameIgnoreCase(data.getAuthor()).orElseThrow(()
+                -> new ResourceNotFoundException("Author dont exists.")));
+        book.setCategory(categoryRepository.findByTitleCategoryIgnoreCase(data.getCategory()).orElseThrow(()
+                -> new ResourceNotFoundException("Category dont exist.")));
 
         return this.mapper.bookToResponse(bookRepository.save(book));
 
@@ -90,7 +92,7 @@ public class BookService {
     public BookResponseDTO getBookById(Long id) {
         Optional<BookModel> book = bookRepository.findById(id);
         if (book.isEmpty()) {
-            throw new ResourceNotFoundException("The book you're looking for is currently unavailable.");
+            throw new ResourceNotFoundException("The book you're looking for don't exists.");
         }
         return this.mapper.bookToResponse(book.get());
     }
@@ -98,7 +100,7 @@ public class BookService {
     public BookModel deleteBook(Long id) {
         Optional<BookModel> book = this.bookRepository.findById(id);
         if (book.isEmpty()) {
-            throw new ResourceNotFoundException("The book you're looking for is currently unavailable.");
+            throw new ResourceNotFoundException("The book you're looking for don't exists.");
         }
         BookModel newBook = book.get();
         newBook.setStatusBook(Status.UNAVAILABLE);
@@ -119,7 +121,7 @@ public class BookService {
                 }
 
         ).orElseThrow(
-                () -> new ResourceNotFoundException("Book not found"));
+                () -> new ResourceNotFoundException("Book not found."));
 
     }
 
