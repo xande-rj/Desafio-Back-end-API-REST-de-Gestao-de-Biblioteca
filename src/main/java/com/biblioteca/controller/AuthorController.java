@@ -5,6 +5,7 @@ import com.biblioteca.domain.service.AuthorService;
 import com.biblioteca.dto.request.AuthorRequestDTO;
 import com.biblioteca.dto.response.AuthorResponseDTO;
 import com.biblioteca.mapper.MapperAuthor;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -27,11 +28,19 @@ public class AuthorController {
     }
 
     @PostMapping
+    @Operation(
+            summary = "Register Author",
+            description = "Creates a new author in the database."
+    )
     public ResponseEntity<AuthorResponseDTO> saveAuthor(@RequestBody @Valid AuthorRequestDTO data) {
         return new ResponseEntity<AuthorResponseDTO>(this.service.createdAuthor(data), HttpStatus.CREATED);
     }
 
     @GetMapping
+    @Operation(
+            summary = "Retrieve Author",
+            description = "Retrieve all authors from the database."
+    )
     public ResponseEntity<List<AuthorResponseDTO>> getAllAuthors() {
         return new ResponseEntity<List<AuthorResponseDTO>> (this.service.getAllAuthors(), HttpStatus.OK);
     }
