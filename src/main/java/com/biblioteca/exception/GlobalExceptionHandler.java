@@ -58,7 +58,7 @@ return ResponseEntity.badRequest().body(errors);
                 .body(
                         new ErroResponseDTO(
                                 ex.getMessage(),
-                                HttpStatus.NOT_FOUND
+                                HttpStatus.BAD_REQUEST
                         )
                 );
     }
