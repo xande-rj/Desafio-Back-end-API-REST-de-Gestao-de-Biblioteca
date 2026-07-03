@@ -5,6 +5,7 @@ import com.biblioteca.domain.service.CategoryService;
 import com.biblioteca.dto.request.CategoryRequestDTO;
 import com.biblioteca.dto.response.CategoryResponseDTO;
 import com.biblioteca.mapper.MapperCategory;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -28,11 +29,19 @@ public class CategoryController {
     }
 
     @PostMapping
+    @Operation(
+            summary = "Create a category",
+                description = "Creates a new category in the database."
+    )
     public ResponseEntity<CategoryResponseDTO> createdCategory(@Valid @RequestBody CategoryRequestDTO data){
         return new ResponseEntity<CategoryResponseDTO>(this.service.createdCategory(data), HttpStatus.CREATED);
     }
 
     @GetMapping
+    @Operation(
+            summary = "Get all categories",
+            description = "returns all categories from the database."
+    )
     public ResponseEntity<List<CategoryResponseDTO>> getAllCategory(){
 
         return new ResponseEntity<List<CategoryResponseDTO>>(this.service.getAllCategory(), HttpStatus.OK);
