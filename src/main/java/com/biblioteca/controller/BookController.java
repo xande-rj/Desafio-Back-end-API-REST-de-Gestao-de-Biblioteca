@@ -6,6 +6,7 @@ import com.biblioteca.dto.request.BookRequestDTO;
 import com.biblioteca.dto.request.BookUpdateDTO;
 import com.biblioteca.dto.response.BookResponseDTO;
 import com.biblioteca.mapper.MapperBook;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -30,11 +31,19 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<BookResponseDTO> createdBook(@RequestBody @Valid BookRequestDTO data) {
+    @Operation(
+            summary = "Register Book",
+            description = "Creates a book in the database."
+    )
+    public ResponseEntity<BookResponseDTO> createdBooks(@RequestBody @Valid BookRequestDTO data) {
         return new ResponseEntity<BookResponseDTO>(service.createdBook(data), HttpStatus.CREATED);
     }
 
     @GetMapping
+    @Operation(
+            summary = "Get All Book",
+            description = "Grab all the books."
+    )
     public Page<BookResponseDTO> getBooks(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "1") int size,
@@ -45,12 +54,20 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookResponseDTO> getBookById(@PathVariable(required = true) Long id) {
+    @Operation(
+            summary = "Get Book",
+            description = "Get book by ID."
+    )
+    public ResponseEntity<BookResponseDTO> getBooksById(@PathVariable(required = true) Long id) {
         return new ResponseEntity<>(this.service.getBookById(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BookResponseDTO> updateBook(
+    @Operation(
+            summary = "Update Book",
+            description = "updates a book in the database."
+    )
+    public ResponseEntity<BookResponseDTO> updateBooks(
             @PathVariable Long id,
             @RequestBody BookUpdateDTO data
     ) {
@@ -58,7 +75,11 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBook(@PathVariable Long id) {
+    @Operation(
+            summary = "Soft delete Book",
+            description = "Removes the book from future loans"
+    )
+    public ResponseEntity<?> deleteBooks(@PathVariable Long id) {
 
         return new ResponseEntity<>( this.service.deleteBook(id), HttpStatus.OK);
     }
